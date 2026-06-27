@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.9
+
+- Made `MvBreadcrumb` interactive and wired the gallery breadcrumb example to show navigation feedback.
+
 ## 0.2.8
 
 - Added visible responses for the gallery sidebar menu/device affordances and chat composer file/search actions.

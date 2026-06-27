@@ -705,6 +705,9 @@ Item {
 
                     Kit.MvBreadcrumb {
                         items: ["工作台", "资料库", "成绩分析"]
+                        onSelected: function(index, item) {
+                            root.showToast("跳转到：" + item)
+                        }
                     }
 
                     Kit.MvTabBar {
