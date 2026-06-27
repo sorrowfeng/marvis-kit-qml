@@ -16,17 +16,21 @@ Item {
     property bool notificationVisible: true
     property bool openComboForScreenshot: Qt.application.arguments.indexOf("--open-combo") >= 0
     property bool showExpandedControlsForScreenshot: Qt.application.arguments.indexOf("--expanded-controls") >= 0
+    property bool openMenuForScreenshot: Qt.application.arguments.indexOf("--open-menu") >= 0
 
     Kit.MarvisPalette { id: palette }
 
     Timer {
         interval: 520
-        running: root.openComboForScreenshot || root.showExpandedControlsForScreenshot
+        running: root.openComboForScreenshot || root.showExpandedControlsForScreenshot || root.openMenuForScreenshot
         repeat: false
         onTriggered: {
             if (root.openComboForScreenshot) {
                 componentScroll.contentItem.contentY = Math.max(0, selectionPanel.y - 80)
                 themeCombo.popup.open()
+            } else if (root.openMenuForScreenshot) {
+                componentScroll.contentItem.contentY = Math.max(0, toolbarMenuPanel.y - 100)
+                moreMenu.openMenu()
             } else {
                 componentScroll.contentItem.contentY = Math.max(0, tagStepperPanel.y - 80)
             }
@@ -564,6 +568,7 @@ Item {
                 }
 
                 Kit.MvPanel {
+                    id: toolbarMenuPanel
                     title: "工具栏与菜单"
                     subtitle: "常用命令、图标按钮、菜单和即时反馈。"
                     Layout.fillWidth: true
@@ -587,6 +592,7 @@ Item {
                             }
                         }
                         Kit.MvMenuButton {
+                            id: moreMenu
                             text: "更多"
                             options: ["重命名", "复制", "删除"]
                             onSelected: function(option) {
@@ -644,6 +650,7 @@ Item {
 
                     Kit.MvTable {
                         headers: ["名称", "状态", "负责人"]
+                        selectedRow: 1
                         rows: [
                             ["成绩分析", "已完成", "Marvis"],
                             ["桌面整理", "运行中", "本机"],
@@ -651,6 +658,16 @@ Item {
                         ]
                         Layout.fillWidth: true
                         Layout.preferredHeight: 156
+                        onRowClicked: function(row, rowData) {
+                            toast.text = "已选择：" + rowData[0]
+                            toast.open = true
+                            toastTimer.restart()
+                        }
+                        onHeaderClicked: function(column, header) {
+                            toast.text = "按" + header + "排序"
+                            toast.open = true
+                            toastTimer.restart()
+                        }
                     }
                 }
 

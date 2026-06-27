@@ -14,7 +14,7 @@ MarvisKit uses the `Mv` prefix for reusable controls and `MarvisPalette` for sha
 
 - `MvButton`: pill button with `secondary`, `primary`, `danger`, and `ghost` variants. Also supports `accent` and `quiet`.
 - `MvIconButton`: compact square icon button.
-- `MvMenuButton`: button with a popup menu.
+- `MvMenuButton`: button with a custom rounded popup menu, selected state, and pressed/hover feedback.
 - `MvToolbar`: rounded command toolbar.
 - `MvCommandItem`: command-palette row with shortcut support.
 
@@ -60,7 +60,7 @@ MarvisKit uses the `Mv` prefix for reusable controls and `MarvisPalette` for sha
 - `MvNavItem`: navigation row.
 - `MvMessageBubble`: chat message bubble.
 - `MvBreadcrumb`: breadcrumb trail.
-- `MvTable`: simple data table.
+- `MvTable`: interactive data table with selectable rows and sortable headers.
 - `MvTreeItem`: expandable tree/file row.
 - `MvShortcut`: shortcut keycap group.
 
@@ -71,4 +71,4 @@ Controls favor predictable property names:
 - Labels: `text`, `title`, `subtitle`
 - Icons: `iconText`
 - State: `selected`, `checked`, `expanded`, `currentIndex`, `currentPage`, `value`
-- Actions: `clicked`, `selected`, `toggled`, `triggered`, `dismissed`, `pageChanged`
+- Actions: `clicked`, `selected`, `toggled`, `triggered`, `dismissed`, `pageChanged`, `rowClicked`, `headerClicked`

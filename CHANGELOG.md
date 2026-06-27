@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.1
+
+- Replaced the native menu surface in `MvMenuButton` with a rounded MarvisKit popup, including hover, pressed, selected, and open/close animation states.
+- Added interactive row selection, header sorting, and click signals to `MvTable`.
+- Updated the gallery examples to demonstrate the custom menu popup and table feedback.
+
 ## 0.2.0
 
 - Added common desktop controls: `MvAccordion`, `MvAvatarGroup`, `MvCalendar`, `MvChip`, `MvColorSwatch`, `MvCommandItem`, `MvDrawer`, `MvNotification`, `MvPagination`, `MvPopover`, `MvShortcut`, `MvStepper`, and `MvTreeItem`.
