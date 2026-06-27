@@ -1240,7 +1240,7 @@ Item {
                                     height: 34
                                     radius: 12
                                     antialiasing: true
-                                    color: taskMouse.containsMouse ? "#ffffff" : "transparent"
+                                    color: taskMouse.containsMouse ? "#ffffff" : Qt.rgba(1, 1, 1, 0)
 
                                     RowLayout {
                                         anchors.fill: parent
