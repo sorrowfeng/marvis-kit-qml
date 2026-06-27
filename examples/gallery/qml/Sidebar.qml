@@ -273,7 +273,7 @@ Item {
         Layout.fillWidth: true
         Layout.preferredHeight: 34
         radius: 8
-        color: selected ? "#ecebea" : mouse.containsMouse ? "#f1f3f4" : "transparent"
+        color: selected ? "#ecebea" : mouse.pressed ? "#e7e8e9" : mouse.containsMouse ? "#f1f3f4" : Qt.rgba(241 / 255, 243 / 255, 244 / 255, 0)
 
         RowLayout {
             anchors.fill: parent

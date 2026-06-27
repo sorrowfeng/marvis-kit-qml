@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.2
+
+- Fixed hover flicker caused by animating from transparent black to hover colors.
+- Moved darker interaction colors to pressed/down states only.
+
 ## 0.1.1
 
 - Fixed gallery window corners by disabling native DWM rounding and removing the aliased `QWindow` mask.

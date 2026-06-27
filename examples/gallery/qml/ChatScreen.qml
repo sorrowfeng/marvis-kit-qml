@@ -385,7 +385,7 @@ Item {
                     width: 30
                     height: 30
                     radius: 15
-                    color: closeMouse.containsMouse ? "#f0f2f4" : "transparent"
+                    color: closeMouse.pressed ? "#e7ebef" : closeMouse.containsMouse ? "#f0f2f4" : Qt.rgba(240 / 255, 242 / 255, 244 / 255, 0)
 
                     Text {
                         anchors.centerIn: parent
@@ -506,7 +506,7 @@ Item {
         property string label: ""
         property bool active: false
 
-        color: active ? "#edf4ff" : footerMouse.containsMouse ? "#f0f2f4" : "transparent"
+        color: active ? "#edf4ff" : footerMouse.pressed ? "#e7ebef" : footerMouse.containsMouse ? "#f0f2f4" : Qt.rgba(240 / 255, 242 / 255, 244 / 255, 0)
         radius: 14
         Layout.fillWidth: true
         Layout.preferredHeight: 30

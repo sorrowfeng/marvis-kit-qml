@@ -17,7 +17,7 @@ Button {
     background: Rectangle {
         radius: height / 2
         antialiasing: true
-        color: root.selected ? p.accentSoft : root.hovered ? p.hover : "transparent"
+        color: root.selected ? p.accentSoft : root.down ? "#e7ebef" : root.hovered ? p.hover : p.hoverTransparent
         border.width: root.selected ? 1 : 0
         border.color: "#cfe0ff"
         Behavior on color { ColorAnimation { duration: 140; easing.type: Easing.OutCubic } }

@@ -93,7 +93,7 @@ Item {
         Layout.preferredWidth: wide ? 116 : 30
         Layout.preferredHeight: 30
         radius: 15
-        color: active ? "#eef4ff" : mouse.containsMouse ? "#f0f2f4" : "transparent"
+        color: active ? "#eef4ff" : mouse.pressed ? "#e7ebef" : mouse.containsMouse ? "#f0f2f4" : Qt.rgba(240 / 255, 242 / 255, 244 / 255, 0)
 
         Row {
             anchors.centerIn: parent

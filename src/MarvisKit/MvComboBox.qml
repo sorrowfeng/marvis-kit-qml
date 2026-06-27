@@ -53,7 +53,7 @@ ComboBox {
         background: Rectangle {
             radius: 9
             antialiasing: true
-            color: option.highlighted ? "#edf4ff" : option.hovered ? "#f7f8fa" : "transparent"
+            color: option.down ? "#e9f1ff" : option.highlighted ? "#edf4ff" : option.hovered ? "#f7f8fa" : Qt.rgba(247 / 255, 248 / 255, 250 / 255, 0)
             Behavior on color { ColorAnimation { duration: 120; easing.type: Easing.OutCubic } }
         }
 

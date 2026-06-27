@@ -24,7 +24,7 @@ RowLayout {
             background: Rectangle {
                 radius: 10
                 antialiasing: true
-                color: root.currentIndex === index ? "#edf4ff" : tab.hovered ? "#f0f2f4" : "transparent"
+                color: root.currentIndex === index ? "#edf4ff" : tab.down ? "#e7ebef" : tab.hovered ? "#f0f2f4" : Qt.rgba(240 / 255, 242 / 255, 244 / 255, 0)
                 Behavior on color { ColorAnimation { duration: 120; easing.type: Easing.OutCubic } }
             }
 

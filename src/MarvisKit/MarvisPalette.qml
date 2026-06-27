@@ -10,6 +10,7 @@ QtObject {
     readonly property color panel: "#ffffff"
     readonly property color soft: "#f5f5f4"
     readonly property color hover: "#f0f2f4"
+    readonly property color hoverTransparent: Qt.rgba(240 / 255, 242 / 255, 244 / 255, 0)
     readonly property color line: "#e8ebee"
     readonly property color lineStrong: "#dbe1e6"
     readonly property color accent: "#2f7cff"

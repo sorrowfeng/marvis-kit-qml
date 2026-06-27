@@ -32,7 +32,7 @@ Rectangle {
                 background: Rectangle {
                     radius: 16
                     antialiasing: true
-                    color: root.currentIndex === index ? "#ffffff" : item.hovered ? "#f7f8fa" : "transparent"
+                    color: root.currentIndex === index ? "#ffffff" : item.down ? "#eef1f4" : item.hovered ? "#f7f8fa" : Qt.rgba(247 / 255, 248 / 255, 250 / 255, 0)
                     Behavior on color { ColorAnimation { duration: 120; easing.type: Easing.OutCubic } }
                 }
 

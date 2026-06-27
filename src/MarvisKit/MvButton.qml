@@ -30,7 +30,7 @@ Button {
             if (!root.enabled) return "#f0f1f2"
             if (root.primaryStyle) return root.down ? "#151515" : p.action
             if (root.dangerStyle) return root.down ? "#c9363b" : p.danger
-            if (root.ghostStyle) return root.hovered || root.down ? p.hover : "transparent"
+            if (root.ghostStyle) return root.down ? "#e7ebef" : root.hovered ? p.hover : p.hoverTransparent
             return root.down ? "#e9ecef" : root.hovered ? "#f7f8fa" : p.panel
         }
         border.width: root.primaryStyle || root.dangerStyle || root.ghostStyle ? 0 : 1
