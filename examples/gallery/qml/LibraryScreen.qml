@@ -14,6 +14,22 @@ Item {
     property bool treeExpanded: true
     property color selectedSwatch: "#2f7cff"
     property bool notificationVisible: true
+    property bool quickFileSelected: false
+    property bool markIconActive: false
+    property bool closeIconActive: false
+    property bool gameClaimed: true
+    property int selectedDayIndex: 2
+    property string selectedFeatureCard: "MAYDAY超话"
+    property string selectedFileCard: "Counter-Strike 2"
+    property int selectedSegment: 0
+    property bool syncEnabled: true
+    property bool restoreOnLaunch: true
+    property string selectedListItem: "学生成绩分析"
+    property bool allChipSelected: true
+    property bool localChipSelected: false
+    property bool highChipVisible: true
+    property bool drawerReminder: true
+    property bool drawerWifiOnly: false
     property bool openComboForScreenshot: Qt.application.arguments.indexOf("--open-combo") >= 0
     property bool showExpandedControlsForScreenshot: Qt.application.arguments.indexOf("--expanded-controls") >= 0
     property bool openMenuForScreenshot: Qt.application.arguments.indexOf("--open-menu") >= 0
@@ -23,6 +39,12 @@ Item {
     property int shellRadius: 36
 
     Kit.MarvisPalette { id: palette }
+
+    function showToast(message) {
+        toast.text = message
+        toast.open = true
+        toastTimer.restart()
+    }
 
     Timer {
         interval: 520
@@ -83,7 +105,10 @@ Item {
             text: "知道了"
             quiet: true
             Layout.alignment: Qt.AlignRight
-            onClicked: samplePopover.close()
+            onClicked: {
+                root.showToast("已关闭 Popover")
+                samplePopover.close()
+            }
         }
     }
 
@@ -110,8 +135,22 @@ Item {
             expanded: true
             Layout.fillWidth: true
 
-            Kit.MvCheckbox { text: "完成后提醒我"; checked: true }
-            Kit.MvCheckbox { text: "仅在 Wi-Fi 下执行"; checked: false }
+            Kit.MvCheckbox {
+                text: "完成后提醒我"
+                checked: root.drawerReminder
+                onToggled: function(checked) {
+                    root.drawerReminder = checked
+                    root.showToast(checked ? "完成后会提醒" : "完成后不提醒")
+                }
+            }
+            Kit.MvCheckbox {
+                text: "仅在 Wi-Fi 下执行"
+                checked: root.drawerWifiOnly
+                onToggled: function(checked) {
+                    root.drawerWifiOnly = checked
+                    root.showToast(checked ? "仅 Wi-Fi 执行" : "任意网络执行")
+                }
+            }
         }
     }
 
@@ -180,22 +219,42 @@ Item {
                             text: "打开"
                             accent: true
                             Layout.preferredWidth: 72
+                            onClicked: root.showToast("已打开示例动作")
                         }
 
                         Kit.MvButton {
-                            text: "选择文件"
-                            iconText: "+"
+                            text: root.quickFileSelected ? "已选择" : "选择文件"
+                            iconText: root.quickFileSelected ? "✓" : "+"
                             Layout.preferredWidth: 98
+                            onClicked: {
+                                root.quickFileSelected = !root.quickFileSelected
+                                root.showToast(root.quickFileSelected ? "已选择文件" : "已取消选择")
+                            }
                         }
 
                         Kit.MvButton {
                             text: "更多"
                             quiet: true
                             Layout.preferredWidth: 72
+                            onClicked: root.showToast("更多动作")
                         }
 
-                        Kit.MvIconButton { iconText: "◦" }
-                        Kit.MvIconButton { iconText: "×" }
+                        Kit.MvIconButton {
+                            iconText: "◦"
+                            selected: root.markIconActive
+                            onClicked: {
+                                root.markIconActive = !root.markIconActive
+                                root.showToast(root.markIconActive ? "已标记" : "已取消标记")
+                            }
+                        }
+                        Kit.MvIconButton {
+                            iconText: "×"
+                            selected: root.closeIconActive
+                            onClicked: {
+                                root.closeIconActive = !root.closeIconActive
+                                root.showToast(root.closeIconActive ? "已收起" : "已恢复")
+                            }
+                        }
                     }
                 }
 
@@ -237,14 +296,18 @@ Item {
                             ]
 
                             Rectangle {
-                                width: modelData.selected ? 44 : 30
+                                id: dayCell
+
+                                readonly property bool active: index === root.selectedDayIndex
+
+                                width: active ? 44 : 30
                                 height: 66
                                 radius: 13
-                                color: modelData.selected ? "#ffffff" : "transparent"
+                                color: active ? "#ffffff" : dayMouse.containsMouse ? "#f7f8fa" : "transparent"
                                 border.width: 0
 
                                 Rectangle {
-                                    visible: modelData.selected
+                                    visible: parent.active
                                     anchors.fill: parent
                                     anchors.topMargin: 9
                                     anchors.leftMargin: 4
@@ -260,7 +323,7 @@ Item {
 
                                     Text {
                                         text: modelData.day
-                                        color: modelData.selected ? "#ff4d73" : "#a7a29d"
+                                        color: dayCell.active ? "#ff4d73" : "#a7a29d"
                                         font.pixelSize: 14
                                         font.weight: Font.DemiBold
                                         horizontalAlignment: Text.AlignHCenter
@@ -276,15 +339,28 @@ Item {
                                         width: 26
                                     }
                                 }
+
+                                MouseArea {
+                                    id: dayMouse
+                                    anchors.fill: parent
+                                    hoverEnabled: true
+                                    cursorShape: Qt.PointingHandCursor
+                                    onClicked: {
+                                        root.selectedDayIndex = index
+                                        root.showToast("已选择日程 " + modelData.day + " " + modelData.num)
+                                    }
+                                }
                             }
                         }
                     }
 
                     Rectangle {
+                        id: gameDealCard
+
                         Layout.fillWidth: true
                         Layout.preferredHeight: 66
                         radius: 18
-                        color: "#f4f3f1"
+                        color: gameDealMouse.containsMouse ? "#eeeeed" : "#f4f3f1"
 
                         RowLayout {
                             anchors.fill: parent
@@ -319,13 +395,26 @@ Item {
                                 }
 
                                 Text {
-                                    text: "已领取"
+                                    text: root.gameClaimed ? "已领取" : "提醒我"
                                     color: palette.ink
                                     font.pixelSize: 18
                                     font.weight: Font.Bold
                                 }
                             }
                         }
+
+                        MouseArea {
+                            id: gameDealMouse
+                            anchors.fill: parent
+                            hoverEnabled: true
+                            cursorShape: Qt.PointingHandCursor
+                            onClicked: {
+                                root.gameClaimed = !root.gameClaimed
+                                root.showToast(root.gameClaimed ? "已领取游戏" : "已设置提醒")
+                            }
+                        }
+
+                        Behavior on color { ColorAnimation { duration: 140; easing.type: Easing.OutCubic } }
                     }
                 }
 
@@ -339,12 +428,14 @@ Item {
                         spacing: 14
 
                         Rectangle {
+                            id: maydayCard
+
                             Layout.fillWidth: true
                             Layout.preferredHeight: 190
                             radius: 20
-                            color: "#ffffff"
+                            color: maydayMouse.containsMouse ? "#fdfdfc" : "#ffffff"
                             border.width: 1
-                            border.color: "#eeeae4"
+                            border.color: root.selectedFeatureCard === "MAYDAY超话" ? "#cfe0ff" : "#eeeae4"
 
                             ColumnLayout {
                                 anchors.fill: parent
@@ -388,15 +479,28 @@ Item {
                                     }
                                 }
                             }
+
+                            MouseArea {
+                                id: maydayMouse
+                                anchors.fill: parent
+                                hoverEnabled: true
+                                cursorShape: Qt.PointingHandCursor
+                                onClicked: {
+                                    root.selectedFeatureCard = "MAYDAY超话"
+                                    root.showToast("已选择 MAYDAY 超话")
+                                }
+                            }
                         }
 
                         Rectangle {
+                            id: albumCard
+
                             Layout.fillWidth: true
                             Layout.preferredHeight: 190
                             radius: 20
-                            color: "#ffffff"
+                            color: albumMouse.containsMouse ? "#fdfdfc" : "#ffffff"
                             border.width: 1
-                            border.color: "#eeeae4"
+                            border.color: root.selectedFeatureCard === "五迷共享相册" ? "#cfe0ff" : "#eeeae4"
 
                             ColumnLayout {
                                 anchors.fill: parent
@@ -442,6 +546,17 @@ Item {
                                     }
                                 }
                             }
+
+                            MouseArea {
+                                id: albumMouse
+                                anchors.fill: parent
+                                hoverEnabled: true
+                                cursorShape: Qt.PointingHandCursor
+                                onClicked: {
+                                    root.selectedFeatureCard = "五迷共享相册"
+                                    root.showToast("已选择共享相册")
+                                }
+                            }
                         }
                     }
                 }
@@ -476,14 +591,24 @@ Item {
                         title: "Counter-Strike 2"
                         subtitle: "多人战术第一人称视角射击游戏"
                         fileType: "CS"
+                        selected: root.selectedFileCard === title
                         Layout.fillWidth: true
+                        onClicked: {
+                            root.selectedFileCard = title
+                            root.showToast("已选择 " + title)
+                        }
                     }
 
                     Kit.MvFileCard {
                         title: "产品复盘资料"
                         subtitle: "文档 · 已生成 8 条洞察"
                         fileType: "DOC"
+                        selected: root.selectedFileCard === title
                         Layout.fillWidth: true
+                        onClicked: {
+                            root.selectedFileCard = title
+                            root.showToast("已选择 " + title)
+                        }
                     }
                 }
 
@@ -495,7 +620,12 @@ Item {
 
                     Kit.MvSegmentedControl {
                         options: ["通用", "安全", "高级"]
+                        currentIndex: root.selectedSegment
                         Layout.fillWidth: true
+                        onSelected: function(index) {
+                            root.selectedSegment = index
+                            root.showToast("已切换到：" + options[index])
+                        }
                     }
 
                     RowLayout {
@@ -506,12 +636,19 @@ Item {
                             id: themeCombo
                             model: ["跟随系统", "浅色", "深色"]
                             Layout.fillWidth: true
+                            onActivated: root.showToast("主题：" + currentText)
                         }
 
                         RowLayout {
                             spacing: 8
-                            Kit.MvToggle { checked: true }
-                            Text { text: "自动同步"; color: palette.text; font.pixelSize: 13 }
+                            Kit.MvToggle {
+                                checked: root.syncEnabled
+                                onToggled: function(checked) {
+                                    root.syncEnabled = checked
+                                    root.showToast(checked ? "自动同步已开启" : "自动同步已关闭")
+                                }
+                            }
+                            Text { text: root.syncEnabled ? "自动同步" : "手动同步"; color: palette.text; font.pixelSize: 13 }
                         }
                     }
 
@@ -521,19 +658,29 @@ Item {
 
                         Kit.MvCheckbox {
                             text: "启动时恢复窗口"
-                            checked: true
+                            checked: root.restoreOnLaunch
+                            onToggled: function(checked) {
+                                root.restoreOnLaunch = checked
+                                root.showToast(checked ? "启动时恢复窗口" : "启动时不恢复窗口")
+                            }
                         }
 
                         Kit.MvRadio {
                             text: "本地优先"
                             checked: root.radioChoice === 0
-                            onSelected: root.radioChoice = 0
+                            onSelected: {
+                                root.radioChoice = 0
+                                root.showToast("已选择本地优先")
+                            }
                         }
 
                         Kit.MvRadio {
                             text: "云端优先"
                             checked: root.radioChoice === 1
-                            onSelected: root.radioChoice = 1
+                            onSelected: {
+                                root.radioChoice = 1
+                                root.showToast("已选择云端优先")
+                            }
                         }
                     }
 
@@ -546,6 +693,7 @@ Item {
                             value: root.progressValue * 100
                             Layout.fillWidth: true
                             onValueChanged: root.progressValue = value / 100
+                            onMoved: root.showToast("动画强度 " + Math.round(value) + "%")
                         }
                     }
                 }
@@ -562,22 +710,34 @@ Item {
                     Kit.MvTabBar {
                         tabs: ["概览", "文件", "活动"]
                         currentIndex: root.tabChoice
-                        onSelected: root.tabChoice = index
+                        onSelected: {
+                            root.tabChoice = index
+                            root.showToast("已切换：" + tabs[index])
+                        }
                     }
 
                     Kit.MvListItem {
                         iconText: "▤"
                         title: "学生成绩分析"
                         subtitle: "3 个图表 · 12 条洞察"
-                        selected: root.tabChoice === 0
+                        selected: root.selectedListItem === title
                         Layout.fillWidth: true
+                        onClicked: {
+                            root.selectedListItem = title
+                            root.showToast("已打开：" + title)
+                        }
                     }
 
                     Kit.MvListItem {
                         iconText: "□"
                         title: "产品复盘资料"
                         subtitle: "最近编辑于 09:41"
+                        selected: root.selectedListItem === title
                         Layout.fillWidth: true
+                        onClicked: {
+                            root.selectedListItem = title
+                            root.showToast("已打开：" + title)
+                        }
                     }
                 }
 
@@ -590,8 +750,14 @@ Item {
                     Kit.MvToolbar {
                         Layout.fillWidth: true
 
-                        Kit.MvIconButton { iconText: "↺" }
-                        Kit.MvIconButton { iconText: "↻" }
+                        Kit.MvIconButton {
+                            iconText: "↺"
+                            onClicked: root.showToast("已撤销一步")
+                        }
+                        Kit.MvIconButton {
+                            iconText: "↻"
+                            onClicked: root.showToast("已重做一步")
+                        }
                         Kit.MvDivider {
                             vertical: true
                             Layout.fillHeight: true
@@ -599,20 +765,14 @@ Item {
                         Kit.MvButton {
                             text: "保存"
                             iconText: "✓"
-                            onClicked: {
-                                toast.text = "已保存"
-                                toast.open = true
-                                toastTimer.restart()
-                            }
+                            onClicked: root.showToast("已保存")
                         }
                         Kit.MvMenuButton {
                             id: moreMenu
                             text: "更多"
                             options: ["重命名", "复制", "删除"]
                             onSelected: function(option) {
-                                toast.text = option
-                                toast.open = true
-                                toastTimer.restart()
+                                root.showToast(option)
                             }
                         }
                     }
@@ -623,16 +783,15 @@ Item {
                         Kit.MvButton {
                             text: "打开弹窗"
                             accent: true
-                            onClicked: sampleDialog.open()
+                            onClicked: {
+                                root.showToast("打开确认弹窗")
+                                sampleDialog.open()
+                            }
                         }
 
                         Kit.MvButton {
                             text: "显示提示"
-                            onClicked: {
-                                toast.text = "任务已加入队列"
-                                toast.open = true
-                                toastTimer.restart()
-                            }
+                            onClicked: root.showToast("任务已加入队列")
                         }
                     }
                 }
@@ -672,14 +831,10 @@ Item {
                         ]
                         Layout.fillWidth: true
                         onRowClicked: function(row, rowData) {
-                            toast.text = "已选择：" + rowData[0]
-                            toast.open = true
-                            toastTimer.restart()
+                            root.showToast("已选择：" + rowData[0])
                         }
                         onHeaderClicked: function(column, header) {
-                            toast.text = "按" + header + "排序"
-                            toast.open = true
-                            toastTimer.restart()
+                            root.showToast("按" + header + "排序")
                         }
                     }
                 }
@@ -705,16 +860,34 @@ Item {
                         Layout.fillWidth: true
                         spacing: 8
 
-                        Kit.MvChip { text: "全部"; selected: true; variant: "accent" }
-                        Kit.MvChip { text: "本地"; variant: "neutral" }
+                        Kit.MvChip {
+                            text: "全部"
+                            selected: root.allChipSelected
+                            variant: "accent"
+                            onClicked: {
+                                root.allChipSelected = selected
+                                root.showToast(selected ? "已选择全部" : "已取消全部")
+                            }
+                        }
+                        Kit.MvChip {
+                            text: "本地"
+                            selected: root.localChipSelected
+                            variant: "neutral"
+                            onClicked: {
+                                root.localChipSelected = selected
+                                root.showToast(selected ? "已筛选本地" : "已取消本地筛选")
+                            }
+                        }
                         Kit.MvChip {
                             text: "高优先级"
                             variant: "warning"
                             removable: true
+                            visible: root.highChipVisible
+                            selected: true
+                            onClicked: root.showToast("高优先级筛选已启用")
                             onRemoved: {
-                                toast.text = "已移除标签"
-                                toast.open = true
-                                toastTimer.restart()
+                                root.highChipVisible = false
+                                root.showToast("已移除标签")
                             }
                         }
                     }
@@ -728,13 +901,19 @@ Item {
                             from: 0
                             to: 100
                             suffix: "%"
-                            onValueChangedByUser: function(value) { root.stepperValue = value }
+                            onValueChangedByUser: function(value) {
+                                root.stepperValue = value
+                                root.showToast("数值：" + value + "%")
+                            }
                         }
 
                         Kit.MvPagination {
                             currentPage: root.currentPage
                             pageCount: 5
-                            onPageChanged: function(page) { root.currentPage = page }
+                            onPageChanged: function(page) {
+                                root.currentPage = page
+                                root.showToast("第 " + page + " 页")
+                            }
                         }
                     }
                 }
@@ -749,20 +928,28 @@ Item {
                         subtitle: "点击标题展开或收起。"
                         expanded: true
                         Layout.fillWidth: true
+                        onToggled: function(expanded) {
+                            root.showToast(expanded ? "已展开同步设置" : "已收起同步设置")
+                        }
 
-                        Kit.MvToggle { checked: true }
+                        Kit.MvToggle {
+                            checked: root.drawerReminder
+                            onToggled: function(checked) {
+                                root.drawerReminder = checked
+                                root.showToast(checked ? "同步提醒已开启" : "同步提醒已关闭")
+                            }
+                        }
                         Kit.MvTextField {
                             text: "每日 20:30"
                             Layout.fillWidth: true
+                            onAccepted: root.showToast("已设置同步时间：" + text)
                         }
                     }
 
                     Kit.MvCalendar {
                         Layout.alignment: Qt.AlignHCenter
                         onSelected: function(date) {
-                            toast.text = Qt.formatDate(date, "MM-dd")
-                            toast.open = true
-                            toastTimer.restart()
+                            root.showToast(Qt.formatDate(date, "MM-dd"))
                         }
                     }
                 }
@@ -780,8 +967,14 @@ Item {
                         tone: "success"
                         actionText: "查看"
                         Layout.fillWidth: true
-                        onActionClicked: sampleDrawer.open()
-                        onDismissed: root.notificationVisible = false
+                        onActionClicked: {
+                            root.showToast("打开任务详情")
+                            sampleDrawer.open()
+                        }
+                        onDismissed: {
+                            root.notificationVisible = false
+                            root.showToast("通知已关闭")
+                        }
                     }
 
                     RowLayout {
@@ -789,19 +982,28 @@ Item {
 
                         Kit.MvButton {
                             text: "打开 Popover"
-                            onClicked: samplePopover.open()
+                            onClicked: {
+                                root.showToast("打开 Popover")
+                                samplePopover.open()
+                            }
                         }
 
                         Kit.MvButton {
                             text: "打开 Drawer"
                             accent: true
-                            onClicked: sampleDrawer.open()
+                            onClicked: {
+                                root.showToast("打开 Drawer")
+                                sampleDrawer.open()
+                            }
                         }
 
                         Kit.MvButton {
                             text: "恢复通知"
                             quiet: true
-                            onClicked: root.notificationVisible = true
+                            onClicked: {
+                                root.notificationVisible = true
+                                root.showToast("通知已恢复")
+                            }
                         }
                     }
                 }
@@ -818,7 +1020,10 @@ Item {
                         expanded: root.treeExpanded
                         selected: true
                         Layout.fillWidth: true
-                        onToggled: function(expanded) { root.treeExpanded = expanded }
+                        onToggled: function(expanded) {
+                                        root.treeExpanded = expanded
+                                        root.showToast(expanded ? "已展开项目资料" : "已收起项目资料")
+                                    }
                     }
 
                     Kit.MvTreeItem {
@@ -828,6 +1033,7 @@ Item {
                         subtitle: "刚刚更新"
                         iconText: "□"
                         Layout.fillWidth: true
+                        onClicked: root.showToast("已打开成绩分析报告")
                     }
 
                     Kit.MvCommandItem {
@@ -837,9 +1043,7 @@ Item {
                         shortcut: ["Ctrl", "K"]
                         Layout.fillWidth: true
                         onTriggered: {
-                            toast.text = "命令已触发"
-                            toast.open = true
-                            toastTimer.restart()
+                            root.showToast("命令已触发")
                         }
                     }
 
@@ -866,21 +1070,30 @@ Item {
                             label: "蓝色"
                             swatchColor: "#2f7cff"
                             selected: root.selectedSwatch === swatchColor
-                            onClicked: function(color) { root.selectedSwatch = color }
+                            onClicked: function(color) {
+                                root.selectedSwatch = color
+                                root.showToast("已选择蓝色")
+                            }
                         }
 
                         Kit.MvColorSwatch {
                             label: "绿色"
                             swatchColor: "#12a174"
                             selected: root.selectedSwatch === swatchColor
-                            onClicked: function(color) { root.selectedSwatch = color }
+                            onClicked: function(color) {
+                                root.selectedSwatch = color
+                                root.showToast("已选择绿色")
+                            }
                         }
 
                         Kit.MvColorSwatch {
                             label: "橙色"
                             swatchColor: "#d9851f"
                             selected: root.selectedSwatch === swatchColor
-                            onClicked: function(color) { root.selectedSwatch = color }
+                            onClicked: function(color) {
+                                root.selectedSwatch = color
+                                root.showToast("已选择橙色")
+                            }
                         }
                     }
                 }

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.7
+
+- Filled in demo interactions across the gallery so clickable component examples update state, open overlays, or show toast feedback.
+- Added feedback wiring for chat demo chips, file rows, and composer submissions.
+
 ## 0.2.6
 
 - Fixed the chat page background so it no longer paints over the desktop shell's bottom-right corner.

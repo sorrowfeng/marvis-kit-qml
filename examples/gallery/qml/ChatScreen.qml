@@ -9,6 +9,14 @@ Item {
     property string selectedFile: "班级成绩分析汇总.doc"
     property bool previewVisible: true
     property bool statusActive: false
+    property string statusTitle: "本地文档处理"
+    property string statusSubtitle: "正在同步手机、电脑和本地文件上下文"
+
+    function showStatus(title, subtitle) {
+        root.statusTitle = title
+        root.statusSubtitle = subtitle
+        root.statusActive = true
+    }
 
     RowLayout {
         anchors.fill: parent
@@ -32,17 +40,26 @@ Item {
                 Pill {
                     text: "✣  智能任务"
                     selected: root.activeChip === 0
-                    onClicked: root.activeChip = 0
+                    onClicked: {
+                        root.activeChip = 0
+                        root.showStatus("智能任务模式", "已切换到自动任务编排")
+                    }
                 }
                 Pill {
                     text: "▤  本地模式"
                     selected: root.activeChip === 1
-                    onClicked: root.activeChip = 1
+                    onClicked: {
+                        root.activeChip = 1
+                        root.showStatus("本地模式", "优先使用本地文件和应用上下文")
+                    }
                 }
                 Pill {
                     text: "⚙  系统控制"
                     selected: root.activeChip === 2
-                    onClicked: root.activeChip = 2
+                    onClicked: {
+                        root.activeChip = 2
+                        root.showStatus("系统控制", "已启用电脑控制能力演示")
+                    }
                 }
             }
 
@@ -145,6 +162,7 @@ Item {
                         onClicked: {
                             root.selectedFile = title
                             root.previewVisible = true
+                            root.showStatus("已打开文档", title)
                         }
                     }
 
@@ -156,6 +174,7 @@ Item {
                         onClicked: {
                             root.selectedFile = title
                             root.previewVisible = true
+                            root.showStatus("已打开文件夹", title)
                         }
                     }
                 }
@@ -197,8 +216,8 @@ Item {
 
                     Column {
                         spacing: 2
-                        Text { text: "本地文档处理"; color: "#202124"; font.pixelSize: 12; font.weight: Font.Bold }
-                        Text { text: "正在同步手机、电脑和本地文件上下文"; color: "#8c939c"; font.pixelSize: 10 }
+                        Text { text: root.statusTitle; color: "#202124"; font.pixelSize: 12; font.weight: Font.Bold }
+                        Text { text: root.statusSubtitle; color: "#8c939c"; font.pixelSize: 10; elide: Text.ElideRight; width: 190 }
                     }
                 }
 
@@ -216,6 +235,9 @@ Item {
                 anchors.bottom: parent.bottom
                 anchors.leftMargin: 0
                 anchors.rightMargin: 0
+                onSubmitted: function(text) {
+                    root.showStatus("请求已发送", text.length > 0 ? text : "空内容，等待输入任务")
+                }
             }
         }
 
