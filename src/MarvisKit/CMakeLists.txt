@@ -18,10 +18,13 @@ qt_add_qml_module(MarvisKit
         MvColorSwatch.qml
         MvComboBox.qml
         MvCommandItem.qml
+        MvDial.qml
         MvDialog.qml
         MvDivider.qml
         MvDrawer.qml
         MvFileCard.qml
+        MvFrame.qml
+        MvGroupBox.qml
         MvIconButton.qml
         MvListItem.qml
         MvMenuButton.qml
@@ -31,19 +34,24 @@ qt_add_qml_module(MarvisKit
         MvPagination.qml
         MvPopover.qml
         MvProgressBar.qml
+        MvPageIndicator.qml
         MvRadio.qml
+        MvRangeSlider.qml
         MvSearchField.qml
         MvSegmentedControl.qml
         MvShortcut.qml
         MvSlider.qml
         MvSpinner.qml
+        MvScrollBar.qml
         MvStepper.qml
+        MvSplitView.qml
         MvStatusDot.qml
         MvTabBar.qml
         MvTable.qml
         MvTextArea.qml
         MvTextField.qml
         MvToast.qml
+        MvToolTip.qml
         MvToggle.qml
         MvToolbar.qml
         MvTreeItem.qml

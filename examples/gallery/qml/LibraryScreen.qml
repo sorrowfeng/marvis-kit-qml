@@ -30,8 +30,10 @@ Item {
     property bool highChipVisible: true
     property bool drawerReminder: true
     property bool drawerWifiOnly: false
+    property int indicatorPage: 0
     property bool openComboForScreenshot: Qt.application.arguments.indexOf("--open-combo") >= 0
     property bool showExpandedControlsForScreenshot: Qt.application.arguments.indexOf("--expanded-controls") >= 0
+    property bool showNewControlsForScreenshot: Qt.application.arguments.indexOf("--new-controls") >= 0
     property bool openMenuForScreenshot: Qt.application.arguments.indexOf("--open-menu") >= 0
     property bool openDialogForScreenshot: Qt.application.arguments.indexOf("--open-dialog") >= 0
     property bool openDrawerForScreenshot: Qt.application.arguments.indexOf("--open-drawer") >= 0
@@ -48,7 +50,7 @@ Item {
 
     Timer {
         interval: 520
-        running: root.openComboForScreenshot || root.showExpandedControlsForScreenshot || root.openMenuForScreenshot || root.openDialogForScreenshot || root.openDrawerForScreenshot
+        running: root.openComboForScreenshot || root.showExpandedControlsForScreenshot || root.showNewControlsForScreenshot || root.openMenuForScreenshot || root.openDialogForScreenshot || root.openDrawerForScreenshot
         repeat: false
         onTriggered: {
             if (root.openComboForScreenshot) {
@@ -63,6 +65,8 @@ Item {
             } else if (root.openDrawerForScreenshot) {
                 componentScroll.contentItem.contentY = Math.max(0, overlayPanel.y - 100)
                 sampleDrawer.open()
+            } else if (root.showNewControlsForScreenshot) {
+                componentScroll.contentItem.contentY = Math.max(0, commonControlsPanel.y - 80)
             } else {
                 componentScroll.contentItem.contentY = Math.max(0, tagStepperPanel.y - 80)
             }
@@ -1096,6 +1100,260 @@ Item {
                             onClicked: function(color) {
                                 root.selectedSwatch = color
                                 root.showToast("已选择橙色")
+                            }
+                        }
+                    }
+                }
+
+                Kit.MvPanel {
+                    id: commonControlsPanel
+                    title: "框架、分组与范围"
+                    subtitle: "补齐 Frame、GroupBox、RangeSlider 和 Dial 等常见桌面控件。"
+                    Layout.fillWidth: true
+                    Layout.columnSpan: 2
+
+                    Kit.MvFrame {
+                        interactive: true
+                        Layout.fillWidth: true
+
+                        RowLayout {
+                            Layout.fillWidth: true
+                            spacing: 10
+
+                            Text {
+                                text: "预算范围"
+                                color: palette.ink
+                                font.pixelSize: 13
+                                font.weight: Font.DemiBold
+                            }
+
+                            Item { Layout.fillWidth: true }
+
+                            Text {
+                                text: Math.round(rangeSlider.first.value) + " - " + Math.round(rangeSlider.second.value)
+                                color: palette.mutedInk
+                                font.pixelSize: 12
+                            }
+                        }
+
+                        Kit.MvRangeSlider {
+                            id: rangeSlider
+                            from: 0
+                            to: 100
+                            first.value: 24
+                            second.value: 76
+                            Layout.fillWidth: true
+                        }
+                    }
+
+                    RowLayout {
+                        Layout.fillWidth: true
+                        spacing: 12
+
+                        Kit.MvGroupBox {
+                            title: "执行强度"
+                            subtitle: "Dial 适合音量、强度、阈值等环形输入。"
+                            Layout.fillWidth: true
+
+                            RowLayout {
+                                Layout.fillWidth: true
+                                spacing: 14
+
+                                Kit.MvDial {
+                                    id: dial
+                                    value: 58
+                                }
+
+                                ColumnLayout {
+                                    Layout.fillWidth: true
+                                    spacing: 4
+
+                                    Text {
+                                        text: Math.round(dial.value) + "%"
+                                        color: palette.ink
+                                        font.pixelSize: 24
+                                        font.weight: Font.Bold
+                                    }
+
+                                    Text {
+                                        text: dial.pressed ? "正在调整" : "单手柄旋转输入"
+                                        color: palette.mutedInk
+                                        font.pixelSize: 12
+                                    }
+                                }
+                            }
+                        }
+
+                        Kit.MvGroupBox {
+                            title: "分组设置"
+                            subtitle: "用于替代 Qt GroupBox，保持白底弱边框。"
+                            Layout.fillWidth: true
+
+                            Kit.MvCheckbox {
+                                text: "后台执行"
+                                checked: true
+                                onToggled: function(checked) {
+                                    root.showToast(checked ? "后台执行已开启" : "后台执行已关闭")
+                                }
+                            }
+
+                            Kit.MvCheckbox {
+                                text: "完成后归档"
+                                checked: false
+                                onToggled: function(checked) {
+                                    root.showToast(checked ? "完成后自动归档" : "不自动归档")
+                                }
+                            }
+                        }
+                    }
+                }
+
+                Kit.MvPanel {
+                    title: "滚动、分割与提示"
+                    subtitle: "ScrollBar、SplitView、PageIndicator 和 ToolTip 覆盖容器与辅助反馈。"
+                    Layout.fillWidth: true
+                    Layout.columnSpan: 2
+
+                    RowLayout {
+                        Layout.fillWidth: true
+                        spacing: 12
+
+                        Rectangle {
+                            Layout.fillWidth: true
+                            Layout.preferredHeight: 154
+                            radius: 16
+                            antialiasing: true
+                            color: "#f7f8fa"
+                            border.width: 1
+                            border.color: "#edf0f3"
+
+                            ListView {
+                                id: scrollList
+                                anchors.fill: parent
+                                anchors.margins: 10
+                                clip: true
+                                model: 12
+                                spacing: 6
+
+                                delegate: Rectangle {
+                                    width: scrollList.width - 12
+                                    height: 34
+                                    radius: 12
+                                    antialiasing: true
+                                    color: taskMouse.containsMouse ? "#ffffff" : "transparent"
+
+                                    RowLayout {
+                                        anchors.fill: parent
+                                        anchors.leftMargin: 10
+                                        anchors.rightMargin: 8
+                                        spacing: 8
+
+                                        Text {
+                                            text: "任务 " + (index + 1)
+                                            color: "#202124"
+                                            font.pixelSize: 13
+                                            Layout.fillWidth: true
+                                        }
+
+                                        Kit.MvStatusDot {
+                                            text: index % 3 === 0 ? "运行中" : "等待"
+                                            color: index % 3 === 0 ? "#12a174" : "#b7c0ca"
+                                        }
+                                    }
+
+                                    MouseArea {
+                                        id: taskMouse
+                                        anchors.fill: parent
+                                        hoverEnabled: true
+                                        cursorShape: Qt.PointingHandCursor
+                                        onClicked: root.showToast("已选择任务 " + (index + 1))
+                                    }
+
+                                    Behavior on color { ColorAnimation { duration: 120; easing.type: Easing.OutCubic } }
+                                }
+
+                                ScrollBar.vertical: Kit.MvScrollBar { }
+                            }
+                        }
+
+                        Kit.MvSplitView {
+                            Layout.fillWidth: true
+                            Layout.preferredHeight: 154
+
+                            Rectangle {
+                                SplitView.preferredWidth: 150
+                                radius: 16
+                                antialiasing: true
+                                color: "#f7f8fa"
+                                border.width: 1
+                                border.color: "#edf0f3"
+
+                                Text {
+                                    anchors.centerIn: parent
+                                    text: "导航"
+                                    color: palette.mutedInk
+                                    font.pixelSize: 13
+                                }
+                            }
+
+                            Rectangle {
+                                SplitView.fillWidth: true
+                                radius: 16
+                                antialiasing: true
+                                color: "#ffffff"
+                                border.width: 1
+                                border.color: "#edf0f3"
+
+                                Text {
+                                    anchors.centerIn: parent
+                                    text: "内容面板"
+                                    color: palette.ink
+                                    font.pixelSize: 15
+                                    font.weight: Font.DemiBold
+                                }
+                            }
+                        }
+                    }
+
+                    RowLayout {
+                        Layout.fillWidth: true
+                        spacing: 12
+
+                        Kit.MvPageIndicator {
+                            count: 4
+                            currentIndex: root.indicatorPage
+                            onSelected: function(index) {
+                                root.indicatorPage = index
+                                root.showToast("第 " + (index + 1) + " 屏")
+                            }
+                        }
+
+                        Text {
+                            text: "当前第 " + (root.indicatorPage + 1) + " 屏"
+                            color: palette.mutedInk
+                            font.pixelSize: 12
+                        }
+
+                        Item { Layout.fillWidth: true }
+
+                        Item {
+                            Layout.preferredWidth: 106
+                            Layout.preferredHeight: 38
+
+                            Kit.MvButton {
+                                id: tipButton
+                                anchors.fill: parent
+                                text: "显示提示"
+                                quiet: true
+                                onClicked: toolTip.open()
+                            }
+
+                            Kit.MvToolTip {
+                                id: toolTip
+                                x: 0
+                                y: tipButton.height + 8
+                                width: 168
+                                text: "用于解释图标、按钮或输入项的轻量提示。"
                             }
                         }
                     }

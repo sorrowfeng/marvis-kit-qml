@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.10
+
+- Added common Qt-style desktop controls: `MvFrame`, `MvGroupBox`, `MvRangeSlider`, `MvDial`, `MvScrollBar`, `MvPageIndicator`, `MvSplitView`, and `MvToolTip`.
+- Expanded the component gallery with interactive demos for grouped settings, range input, circular input, scrollbars, split panes, page dots, and tooltip popups.
+- Updated the component documentation and README control coverage.
+
 ## 0.2.9
 
 - Made `MvBreadcrumb` interactive and wired the gallery breadcrumb example to show navigation feedback.

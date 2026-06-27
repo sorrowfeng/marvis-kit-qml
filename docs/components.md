@@ -6,6 +6,8 @@ MarvisKit uses the `Mv` prefix for reusable controls and `MarvisPalette` for sha
 
 - `MarvisPalette`: shared color tokens.
 - `MvPanel`: rounded panel with optional title and subtitle.
+- `MvFrame`: lightweight bordered content frame.
+- `MvGroupBox`: titled grouped settings container.
 - `MvCard`: compact content card.
 - `MvDivider`: horizontal or vertical divider.
 - `MvAccordion`: expandable/collapsible content section.
@@ -25,6 +27,8 @@ MarvisKit uses the `Mv` prefix for reusable controls and `MarvisPalette` for sha
 - `MvSearchField`: search input.
 - `MvComboBox`: styled combo box.
 - `MvSlider`: styled slider.
+- `MvRangeSlider`: two-handle range slider.
+- `MvDial`: circular value input.
 - `MvStepper`: increment/decrement numeric input.
 - `MvCalendar`: month calendar with day selection.
 
@@ -37,6 +41,7 @@ MarvisKit uses the `Mv` prefix for reusable controls and `MarvisPalette` for sha
 - `MvSegmentedControl`: pill segmented selector.
 - `MvTabBar`: tab selector.
 - `MvPagination`: compact page selector.
+- `MvPageIndicator`: compact carousel/page indicator dots.
 - `MvColorSwatch`: color choice chip.
 
 ## Feedback
@@ -50,6 +55,7 @@ MarvisKit uses the `Mv` prefix for reusable controls and `MarvisPalette` for sha
 - `MvDialog`: modal dialog with rounded-shell-aware dim overlay.
 - `MvPopover`: lightweight contextual floating panel.
 - `MvDrawer`: animated side drawer for detail/editing flows, with rounded-shell-aware dim overlay.
+- `MvToolTip`: dark compact helper tooltip popup.
 
 ## Content
 
@@ -63,6 +69,8 @@ MarvisKit uses the `Mv` prefix for reusable controls and `MarvisPalette` for sha
 - `MvTable`: interactive data table with selectable rows and sortable headers.
 - `MvTreeItem`: expandable tree/file row.
 - `MvShortcut`: shortcut keycap group.
+- `MvScrollBar`: styled vertical or horizontal scrollbar.
+- `MvSplitView`: styled split-pane container handle.
 
 ## API Style
 
@@ -70,5 +78,5 @@ Controls favor predictable property names:
 
 - Labels: `text`, `title`, `subtitle`
 - Icons: `iconText`
-- State: `selected`, `checked`, `expanded`, `currentIndex`, `currentPage`, `value`, `overlayInset`, `overlayRadius`
+- State: `selected`, `checked`, `expanded`, `currentIndex`, `currentPage`, `value`, `first.value`, `second.value`, `overlayInset`, `overlayRadius`
 - Actions: `clicked`, `selected`, `toggled`, `triggered`, `dismissed`, `pageChanged`, `rowClicked`, `headerClicked`
