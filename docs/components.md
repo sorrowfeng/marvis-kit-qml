@@ -49,7 +49,7 @@ MarvisKit uses the `Mv` prefix for reusable controls and `MarvisPalette` for sha
 - `MvNotification`: dismissible notification/action card.
 - `MvDialog`: modal dialog with rounded-shell-aware dim overlay.
 - `MvPopover`: lightweight contextual floating panel.
-- `MvDrawer`: side drawer for detail/editing flows, with rounded-shell-aware dim overlay.
+- `MvDrawer`: animated side drawer for detail/editing flows, with rounded-shell-aware dim overlay.
 
 ## Content
 

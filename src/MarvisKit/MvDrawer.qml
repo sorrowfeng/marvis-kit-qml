@@ -11,13 +11,15 @@ Popup {
     property real overlayInset: 8
     property real overlayRadius: 36
     property color overlayColor: "#33000000"
+    readonly property real visibleX: edge === "right" && parent ? parent.width - width - overlayInset : overlayInset
+    readonly property real hiddenX: edge === "right" && parent ? parent.width - overlayInset : overlayInset - width
 
     modal: true
     dim: true
     focus: true
     width: 360
     height: parent ? Math.max(0, parent.height - overlayInset * 2) : 640
-    x: edge === "right" && parent ? parent.width - width - overlayInset : overlayInset
+    x: visibleX
     y: parent ? overlayInset : 0
     padding: 0
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
@@ -31,11 +33,13 @@ Popup {
     }
 
     enter: Transition {
-        NumberAnimation { property: "opacity"; from: 0; to: 1; duration: 140; easing.type: Easing.OutCubic }
+        NumberAnimation { property: "x"; from: root.hiddenX; to: root.visibleX; duration: 220; easing.type: Easing.OutCubic }
+        NumberAnimation { property: "opacity"; from: 0; to: 1; duration: 160; easing.type: Easing.OutCubic }
     }
 
     exit: Transition {
-        NumberAnimation { property: "opacity"; from: 1; to: 0; duration: 110; easing.type: Easing.OutCubic }
+        NumberAnimation { property: "x"; from: root.visibleX; to: root.hiddenX; duration: 180; easing.type: Easing.InCubic }
+        NumberAnimation { property: "opacity"; from: 1; to: 0; duration: 130; easing.type: Easing.InCubic }
     }
 
     background: Rectangle {

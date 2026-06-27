@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.4
+
+- Added slide-in and slide-out edge transitions to `MvDrawer` while preserving the rounded-shell overlay behavior.
+
 ## 0.2.3
 
 - Fixed GitHub Actions Windows builds by pinning `windows-2022`, setting up the MSVC developer environment explicitly, and building with Ninja instead of the Visual Studio generator.
