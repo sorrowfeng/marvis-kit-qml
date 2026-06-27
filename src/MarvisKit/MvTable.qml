@@ -14,6 +14,10 @@ Rectangle {
     property int sortColumn: -1
     property bool sortAscending: true
     property bool interactive: true
+    property int headerHeight: 38
+    property int rowHeight: 42
+    property int outerPadding: 7
+    property int horizontalPadding: 14
     signal rowClicked(int row, var rowData)
     signal headerClicked(int column, string header)
 
@@ -48,20 +52,21 @@ Rectangle {
     color: "#ffffff"
     border.width: 1
     border.color: "#eceff2"
-    implicitHeight: table.implicitHeight + 14
+    implicitHeight: table.implicitHeight + outerPadding * 2
+    Layout.minimumHeight: implicitHeight
     clip: true
 
     ColumnLayout {
         id: table
         anchors.fill: parent
-        anchors.margins: 7
+        anchors.margins: root.outerPadding
         spacing: 2
 
         Rectangle {
             id: headerRow
 
             Layout.fillWidth: true
-            Layout.preferredHeight: 38
+            Layout.preferredHeight: root.headerHeight
             radius: 12
             antialiasing: true
             color: "#f7f8fa"
@@ -81,13 +86,14 @@ Rectangle {
 
                         Layout.fillWidth: true
                         Layout.fillHeight: true
+                        Layout.preferredWidth: 1
                         radius: 10
                         antialiasing: true
                         color: headerMouse.pressed ? "#e7ebef" : headerMouse.containsMouse && root.interactive ? "#eef2f5" : Qt.rgba(238 / 255, 242 / 255, 245 / 255, 0)
 
                         RowLayout {
                             anchors.fill: parent
-                            anchors.leftMargin: 14
+                            anchors.leftMargin: root.horizontalPadding
                             anchors.rightMargin: 10
                             spacing: 6
 
@@ -97,6 +103,8 @@ Rectangle {
                                 font.pixelSize: 12
                                 font.weight: Font.Bold
                                 Layout.fillWidth: true
+                                Layout.fillHeight: true
+                                verticalAlignment: Text.AlignVCenter
                                 elide: Text.ElideRight
                             }
 
@@ -106,6 +114,8 @@ Rectangle {
                                 color: "#2f7cff"
                                 font.pixelSize: 11
                                 font.weight: Font.Bold
+                                Layout.fillHeight: true
+                                verticalAlignment: Text.AlignVCenter
                             }
                         }
 
@@ -134,7 +144,7 @@ Rectangle {
                 required property var modelData
 
                 Layout.fillWidth: true
-                Layout.preferredHeight: 42
+                Layout.preferredHeight: root.rowHeight
                 radius: 12
                 antialiasing: true
                 color: root.selectedRow === index ? "#edf4ff" : rowMouse.pressed ? "#e7ebef" : rowMouse.containsMouse && root.interactive ? "#f7f8fa" : Qt.rgba(247 / 255, 248 / 255, 250 / 255, 0)
@@ -156,7 +166,9 @@ Rectangle {
                             font.pixelSize: 12
                             font.weight: root.selectedRow === rowItem.index ? Font.DemiBold : Font.Normal
                             Layout.fillWidth: true
-                            leftPadding: 14
+                            Layout.fillHeight: true
+                            Layout.preferredWidth: 1
+                            leftPadding: root.horizontalPadding
                             rightPadding: 10
                             horizontalAlignment: Text.AlignLeft
                             verticalAlignment: Text.AlignVCenter

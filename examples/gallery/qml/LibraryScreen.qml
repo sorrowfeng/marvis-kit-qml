@@ -665,7 +665,6 @@ Item {
                             ["CS2 更新", "等待", "Steam"]
                         ]
                         Layout.fillWidth: true
-                        Layout.preferredHeight: 156
                         onRowClicked: function(row, rowData) {
                             toast.text = "已选择：" + rowData[0]
                             toast.open = true

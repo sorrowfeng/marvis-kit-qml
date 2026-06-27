@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.5
+
+- Fixed `MvTable` row clipping and tightened header/cell alignment by giving columns equal layout widths and enforcing the table's minimum height.
+
 ## 0.2.4
 
 - Added slide-in and slide-out edge transitions to `MvDrawer` while preserving the rounded-shell overlay behavior.
