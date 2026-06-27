@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.3
+
+- Fixed GitHub Actions Windows builds by pinning `windows-2022`, setting up the MSVC developer environment explicitly, and building with Ninja instead of the Visual Studio generator.
+
 ## 0.2.2
 
 - Kept modal dialog and drawer dim overlays inside the rounded desktop shell so opening them no longer squares off the main window corners.

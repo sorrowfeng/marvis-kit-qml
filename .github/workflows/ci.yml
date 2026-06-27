@@ -10,11 +10,16 @@ permissions:
 jobs:
   windows:
     name: Windows Qt Build
-    runs-on: windows-latest
+    runs-on: windows-2022
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Setup MSVC
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
@@ -26,7 +31,7 @@ jobs:
           cache: true
 
       - name: Configure
-        run: cmake -S . -B build -G "Visual Studio 17 2022" -A x64 -DMARVIS_KIT_BUILD_EXAMPLES=ON
+        run: cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DMARVIS_KIT_BUILD_EXAMPLES=ON
 
       - name: Build
-        run: cmake --build build --config Release --parallel
+        run: cmake --build build --parallel
