@@ -158,6 +158,46 @@ Item {
         }
     }
 
+    component SectionHeader: RowLayout {
+        id: section
+
+        property string title: ""
+        property string subtitle: ""
+        property int topGap: 8
+
+        Layout.fillWidth: true
+        Layout.columnSpan: catalogGrid.columns
+        Layout.topMargin: topGap
+        spacing: 14
+
+        ColumnLayout {
+            spacing: 2
+            Layout.minimumWidth: 210
+
+            Text {
+                text: section.title
+                color: "#202124"
+                font.pixelSize: 13
+                font.weight: Font.DemiBold
+            }
+
+            Text {
+                text: section.subtitle
+                color: "#8c939c"
+                font.pixelSize: 11
+                visible: section.subtitle.length > 0
+            }
+        }
+
+        Rectangle {
+            Layout.fillWidth: true
+            Layout.preferredHeight: 1
+            Layout.alignment: Qt.AlignVCenter
+            radius: 1
+            color: "#eceff2"
+        }
+    }
+
     ScrollView {
         id: componentScroll
         anchors.fill: parent
@@ -168,8 +208,9 @@ Item {
         clip: true
 
         ColumnLayout {
-            width: Math.max(780, root.width - 64)
-            spacing: 18
+            width: Math.min(1240, Math.max(780, root.width - 64))
+            x: Math.max(0, (componentScroll.width - width) / 2)
+            spacing: 20
 
             RowLayout {
                 Layout.fillWidth: true
@@ -205,10 +246,18 @@ Item {
             }
 
             GridLayout {
-                columns: 2
-                columnSpacing: 18
-                rowSpacing: 18
+                id: catalogGrid
+
+                columns: root.width < 980 ? 1 : 2
+                columnSpacing: 16
+                rowSpacing: 14
                 Layout.fillWidth: true
+
+                SectionHeader {
+                    title: "基础操作"
+                    subtitle: "按钮、输入和轻量选择先放在最前面。"
+                    topGap: 0
+                }
 
                 Kit.MvPanel {
                     title: "按钮与胶囊"
@@ -283,88 +332,95 @@ Item {
                     title: "日程胶囊"
                     subtitle: "参考周历卡片的选中状态：小块、轻阴影、少量强调色。"
                     Layout.fillWidth: true
+                    Layout.columnSpan: catalogGrid.columns
 
                     RowLayout {
                         Layout.fillWidth: true
-                        spacing: 22
+                        spacing: 18
 
-                        Repeater {
-                            model: [
-                                { day: "S", num: "✓", selected: false },
-                                { day: "M", num: "✓", selected: false },
-                                { day: "T", num: "✓", selected: true },
-                                { day: "W", num: "2", selected: false },
-                                { day: "T", num: "3", selected: false },
-                                { day: "F", num: "4", selected: false },
-                                { day: "S", num: "5", selected: false }
-                            ]
+                        RowLayout {
+                            Layout.preferredWidth: 520
+                            Layout.alignment: Qt.AlignVCenter
+                            spacing: 22
 
-                            Rectangle {
-                                id: dayCell
-
-                                readonly property bool active: index === root.selectedDayIndex
-
-                                width: active ? 44 : 30
-                                height: 66
-                                radius: 13
-                                color: active ? "#ffffff" : dayMouse.containsMouse ? "#f7f8fa" : "transparent"
-                                border.width: 0
+                            Repeater {
+                                model: [
+                                    { day: "S", num: "✓", selected: false },
+                                    { day: "M", num: "✓", selected: false },
+                                    { day: "T", num: "✓", selected: true },
+                                    { day: "W", num: "2", selected: false },
+                                    { day: "T", num: "3", selected: false },
+                                    { day: "F", num: "4", selected: false },
+                                    { day: "S", num: "5", selected: false }
+                                ]
 
                                 Rectangle {
-                                    visible: parent.active
-                                    anchors.fill: parent
-                                    anchors.topMargin: 9
-                                    anchors.leftMargin: 4
-                                    anchors.rightMargin: 4
+                                    id: dayCell
+
+                                    readonly property bool active: index === root.selectedDayIndex
+
+                                    width: active ? 44 : 30
+                                    height: 66
                                     radius: 13
-                                    color: "#10000000"
-                                    z: -1
-                                }
+                                    color: active ? "#ffffff" : dayMouse.containsMouse ? "#f7f8fa" : "transparent"
+                                    border.width: 0
 
-                                Column {
-                                    anchors.centerIn: parent
-                                    spacing: 9
-
-                                    Text {
-                                        text: modelData.day
-                                        color: dayCell.active ? "#ff4d73" : "#a7a29d"
-                                        font.pixelSize: 14
-                                        font.weight: Font.DemiBold
-                                        horizontalAlignment: Text.AlignHCenter
-                                        width: 26
+                                    Rectangle {
+                                        visible: parent.active
+                                        anchors.fill: parent
+                                        anchors.topMargin: 9
+                                        anchors.leftMargin: 4
+                                        anchors.rightMargin: 4
+                                        radius: 13
+                                        color: "#10000000"
+                                        z: -1
                                     }
 
-                                    Text {
-                                        text: modelData.num
-                                        color: "#171716"
-                                        font.pixelSize: 18
-                                        font.weight: Font.DemiBold
-                                        horizontalAlignment: Text.AlignHCenter
-                                        width: 26
-                                    }
-                                }
+                                    Column {
+                                        anchors.centerIn: parent
+                                        spacing: 9
 
-                                MouseArea {
-                                    id: dayMouse
-                                    anchors.fill: parent
-                                    hoverEnabled: true
-                                    cursorShape: Qt.PointingHandCursor
-                                    onClicked: {
-                                        root.selectedDayIndex = index
-                                        root.showToast("已选择日程 " + modelData.day + " " + modelData.num)
+                                        Text {
+                                            text: modelData.day
+                                            color: dayCell.active ? "#ff4d73" : "#a7a29d"
+                                            font.pixelSize: 14
+                                            font.weight: Font.DemiBold
+                                            horizontalAlignment: Text.AlignHCenter
+                                            width: 26
+                                        }
+
+                                        Text {
+                                            text: modelData.num
+                                            color: "#171716"
+                                            font.pixelSize: 18
+                                            font.weight: Font.DemiBold
+                                            horizontalAlignment: Text.AlignHCenter
+                                            width: 26
+                                        }
+                                    }
+
+                                    MouseArea {
+                                        id: dayMouse
+                                        anchors.fill: parent
+                                        hoverEnabled: true
+                                        cursorShape: Qt.PointingHandCursor
+                                        onClicked: {
+                                            root.selectedDayIndex = index
+                                            root.showToast("已选择日程 " + modelData.day + " " + modelData.num)
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
 
-                    Rectangle {
-                        id: gameDealCard
+                        Rectangle {
+                            id: gameDealCard
 
-                        Layout.fillWidth: true
-                        Layout.preferredHeight: 66
-                        radius: 18
-                        color: gameDealMouse.containsMouse ? "#eeeeed" : "#f4f3f1"
+                            Layout.fillWidth: true
+                            Layout.preferredHeight: 72
+                            Layout.alignment: Qt.AlignVCenter
+                            radius: 18
+                            color: gameDealMouse.containsMouse ? "#eeeeed" : "#f4f3f1"
 
                         RowLayout {
                             anchors.fill: parent
@@ -418,8 +474,14 @@ Item {
                             }
                         }
 
-                        Behavior on color { ColorAnimation { duration: 140; easing.type: Easing.OutCubic } }
+                            Behavior on color { ColorAnimation { duration: 140; easing.type: Easing.OutCubic } }
+                        }
                     }
+                }
+
+                SectionHeader {
+                    title: "内容展示"
+                    subtitle: "卡片、气泡和文件承载层集中到同一组。"
                 }
 
                 Kit.MvPanel {
@@ -616,6 +678,11 @@ Item {
                     }
                 }
 
+                SectionHeader {
+                    title: "选择与导航"
+                    subtitle: "筛选、分段、列表和层级导航按操作流归类。"
+                }
+
                 Kit.MvPanel {
                     id: selectionPanel
                     title: "选择与设置"
@@ -748,6 +815,11 @@ Item {
                     }
                 }
 
+                SectionHeader {
+                    title: "命令、数据与反馈"
+                    subtitle: "把工具栏、进度状态、表格和文本编辑放到同一段。"
+                }
+
                 Kit.MvPanel {
                     id: toolbarMenuPanel
                     title: "工具栏与菜单"
@@ -857,6 +929,11 @@ Item {
                     }
                 }
 
+                SectionHeader {
+                    title: "扩展交互"
+                    subtitle: "分页、折叠、浮层和视觉选择继续向下展开。"
+                }
+
                 Kit.MvPanel {
                     id: tagStepperPanel
                     title: "标签、数值与分页"
@@ -926,42 +1003,6 @@ Item {
                 }
 
                 Kit.MvPanel {
-                    title: "日期与折叠"
-                    subtitle: "日历支持切换月份和选择日期，Accordion 带展开动画。"
-                    Layout.fillWidth: true
-
-                    Kit.MvAccordion {
-                        title: "同步任务设置"
-                        subtitle: "点击标题展开或收起。"
-                        expanded: true
-                        Layout.fillWidth: true
-                        onToggled: function(expanded) {
-                            root.showToast(expanded ? "已展开同步设置" : "已收起同步设置")
-                        }
-
-                        Kit.MvToggle {
-                            checked: root.drawerReminder
-                            onToggled: function(checked) {
-                                root.drawerReminder = checked
-                                root.showToast(checked ? "同步提醒已开启" : "同步提醒已关闭")
-                            }
-                        }
-                        Kit.MvTextField {
-                            text: "每日 20:30"
-                            Layout.fillWidth: true
-                            onAccepted: root.showToast("已设置同步时间：" + text)
-                        }
-                    }
-
-                    Kit.MvCalendar {
-                        Layout.alignment: Qt.AlignHCenter
-                        onSelected: function(date) {
-                            root.showToast(Qt.formatDate(date, "MM-dd"))
-                        }
-                    }
-                }
-
-                Kit.MvPanel {
                     id: overlayPanel
                     title: "浮层与通知"
                     subtitle: "Popover、Drawer 和 Notification 覆盖桌面应用常见反馈与详情面板。"
@@ -1011,6 +1052,42 @@ Item {
                                 root.notificationVisible = true
                                 root.showToast("通知已恢复")
                             }
+                        }
+                    }
+                }
+
+                Kit.MvPanel {
+                    title: "日期与折叠"
+                    subtitle: "日历支持切换月份和选择日期，Accordion 带展开动画。"
+                    Layout.fillWidth: true
+
+                    Kit.MvAccordion {
+                        title: "同步任务设置"
+                        subtitle: "点击标题展开或收起。"
+                        expanded: true
+                        Layout.fillWidth: true
+                        onToggled: function(expanded) {
+                            root.showToast(expanded ? "已展开同步设置" : "已收起同步设置")
+                        }
+
+                        Kit.MvToggle {
+                            checked: root.drawerReminder
+                            onToggled: function(checked) {
+                                root.drawerReminder = checked
+                                root.showToast(checked ? "同步提醒已开启" : "同步提醒已关闭")
+                            }
+                        }
+                        Kit.MvTextField {
+                            text: "每日 20:30"
+                            Layout.fillWidth: true
+                            onAccepted: root.showToast("已设置同步时间：" + text)
+                        }
+                    }
+
+                    Kit.MvCalendar {
+                        Layout.alignment: Qt.AlignHCenter
+                        onSelected: function(date) {
+                            root.showToast(Qt.formatDate(date, "MM-dd"))
                         }
                     }
                 }
@@ -1105,12 +1182,17 @@ Item {
                     }
                 }
 
+                SectionHeader {
+                    title: "容器与补充控件"
+                    subtitle: "新增常用 Qt 桌面控件集中在底部，方便快速核对。"
+                }
+
                 Kit.MvPanel {
                     id: commonControlsPanel
                     title: "框架、分组与范围"
                     subtitle: "补齐 Frame、GroupBox、RangeSlider 和 Dial 等常见桌面控件。"
                     Layout.fillWidth: true
-                    Layout.columnSpan: 2
+                    Layout.columnSpan: catalogGrid.columns
 
                     Kit.MvFrame {
                         interactive: true
@@ -1212,7 +1294,7 @@ Item {
                     title: "滚动、分割与提示"
                     subtitle: "ScrollBar、SplitView、PageIndicator 和 ToolTip 覆盖容器与辅助反馈。"
                     Layout.fillWidth: true
-                    Layout.columnSpan: 2
+                    Layout.columnSpan: catalogGrid.columns
 
                     RowLayout {
                         Layout.fillWidth: true
