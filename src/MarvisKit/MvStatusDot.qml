@@ -13,6 +13,7 @@ RowLayout {
         width: 7
         height: 7
         radius: 4
+        antialiasing: true
         color: root.color
         Layout.alignment: Qt.AlignVCenter
     }

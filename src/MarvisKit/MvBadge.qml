@@ -10,6 +10,7 @@ Rectangle {
     implicitWidth: Math.max(40, label.implicitWidth + 16)
     implicitHeight: 24
     radius: 12
+    antialiasing: true
     color: fill
 
     Text {

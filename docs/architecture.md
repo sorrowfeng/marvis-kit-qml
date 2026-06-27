@@ -22,7 +22,7 @@ Applications that consume the module statically should link both targets and imp
 `examples/gallery` is a reference desktop app. It demonstrates:
 
 - A frameless Qt Quick window.
-- Windows rounded-corner integration through DWM and a rounded `QWindow` mask.
+- Windows gallery chrome that disables native DWM rounding and lets the antialiased QML shell own the large custom corners.
 - A Marvis-like app shell with sidebar, title bar, chat screen, composer, preview panel, and control catalog.
 
 Gallery-specific code belongs in `examples/gallery`, not in the reusable module.

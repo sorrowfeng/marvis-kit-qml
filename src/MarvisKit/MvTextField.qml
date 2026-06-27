@@ -15,6 +15,7 @@ TextField {
 
     background: Rectangle {
         radius: 12
+        antialiasing: true
         color: root.activeFocus ? "#ffffff" : "#f7f8fa"
         border.width: 1
         border.color: root.activeFocus ? "#c8dcff" : "#eceff2"

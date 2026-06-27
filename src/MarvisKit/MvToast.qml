@@ -9,6 +9,7 @@ Rectangle {
     implicitWidth: Math.max(180, label.implicitWidth + 36)
     implicitHeight: 44
     radius: 22
+    antialiasing: true
     color: "#202124"
     opacity: open ? 1 : 0
     y: open ? 0 : 8

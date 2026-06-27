@@ -12,6 +12,7 @@ Rectangle {
 
     implicitHeight: 48
     radius: 10
+    antialiasing: true
     color: selected ? "#ecebea" : mouse.containsMouse ? "#f1f3f4" : "transparent"
 
     RowLayout {
@@ -36,4 +37,6 @@ Rectangle {
         cursorShape: Qt.PointingHandCursor
         onClicked: root.clicked()
     }
+
+    Behavior on color { ColorAnimation { duration: 130; easing.type: Easing.OutCubic } }
 }

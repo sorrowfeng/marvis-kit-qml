@@ -11,10 +11,10 @@ Rectangle {
 
     implicitHeight: body.implicitHeight + root.inset * 2
     radius: 20
+    antialiasing: true
     color: "#ffffff"
     border.width: 1
     border.color: "#eceff2"
-    clip: true
 
     ColumnLayout {
         id: body

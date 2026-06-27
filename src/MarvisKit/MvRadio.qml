@@ -21,15 +21,18 @@ Item {
             width: 18
             height: 18
             radius: 9
+            antialiasing: true
             Layout.alignment: Qt.AlignVCenter
             color: "#ffffff"
             border.width: 1
             border.color: root.checked ? "#050505" : "#d8dee4"
+            Behavior on border.color { ColorAnimation { duration: 130; easing.type: Easing.OutCubic } }
 
             Rectangle {
                 width: 8
                 height: 8
                 radius: 4
+                antialiasing: true
                 anchors.centerIn: parent
                 visible: root.checked
                 color: "#050505"

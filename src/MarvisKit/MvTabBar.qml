@@ -23,7 +23,9 @@ RowLayout {
 
             background: Rectangle {
                 radius: 10
+                antialiasing: true
                 color: root.currentIndex === index ? "#edf4ff" : tab.hovered ? "#f0f2f4" : "transparent"
+                Behavior on color { ColorAnimation { duration: 120; easing.type: Easing.OutCubic } }
             }
 
             contentItem: Text {

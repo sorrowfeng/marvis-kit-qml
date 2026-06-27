@@ -15,8 +15,11 @@ TextArea {
 
     background: Rectangle {
         radius: 14
+        antialiasing: true
         color: root.activeFocus ? "#ffffff" : "#f7f8fa"
         border.width: 1
         border.color: root.activeFocus ? "#c8dcff" : "#eceff2"
+        Behavior on color { ColorAnimation { duration: 130; easing.type: Easing.OutCubic } }
+        Behavior on border.color { ColorAnimation { duration: 130; easing.type: Easing.OutCubic } }
     }
 }

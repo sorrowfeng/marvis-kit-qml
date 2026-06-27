@@ -17,6 +17,7 @@ Popup {
 
     background: Rectangle {
         radius: 18
+        antialiasing: true
         color: "#ffffff"
         border.width: 1
         border.color: "#eceff2"

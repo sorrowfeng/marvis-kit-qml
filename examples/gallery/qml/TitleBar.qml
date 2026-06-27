@@ -27,6 +27,8 @@ Item {
     Rectangle {
         anchors.fill: parent
         color: "#fafafa"
+        topRightRadius: 36
+        antialiasing: true
     }
 
     Text {

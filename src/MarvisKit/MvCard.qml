@@ -14,7 +14,7 @@ Rectangle {
     color: mouse.containsMouse && interactive ? "#ffffff" : "#fdfdfc"
     border.width: 1
     border.color: mouse.containsMouse && interactive ? "#dce3ea" : "#eceff2"
-    y: mouse.containsMouse && interactive ? -2 : 0
+    antialiasing: true
 
     Rectangle {
         z: -1
@@ -23,6 +23,7 @@ Rectangle {
         anchors.leftMargin: 8
         anchors.rightMargin: 8
         radius: root.radius
+        antialiasing: true
         color: "#10000000"
     }
 
@@ -71,6 +72,6 @@ Rectangle {
         }
     }
 
-    Behavior on y { NumberAnimation { duration: 160; easing.type: Easing.OutCubic } }
     Behavior on color { ColorAnimation { duration: 140; easing.type: Easing.OutCubic } }
+    Behavior on border.color { ColorAnimation { duration: 140; easing.type: Easing.OutCubic } }
 }

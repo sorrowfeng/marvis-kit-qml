@@ -13,6 +13,7 @@ Item {
         width: 20
         height: 20
         radius: 10
+        antialiasing: true
         anchors.centerIn: parent
         color: "transparent"
         border.width: 3
@@ -23,6 +24,7 @@ Item {
         width: 8
         height: 8
         radius: 4
+        antialiasing: true
         color: root.color
         anchors.horizontalCenter: parent.horizontalCenter
         y: 0

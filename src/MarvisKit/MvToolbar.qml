@@ -8,6 +8,7 @@ Rectangle {
 
     implicitHeight: 46
     radius: 14
+    antialiasing: true
     color: "#ffffff"
     border.width: 1
     border.color: "#eceff2"

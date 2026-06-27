@@ -3,10 +3,8 @@
 #include <QFile>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-#include <QPainterPath>
 #include <QQuickWindow>
 #include <QQuickStyle>
-#include <QRegion>
 #include <QSurfaceFormat>
 #include <QTextStream>
 #include <QTimer>
@@ -23,25 +21,6 @@ Q_IMPORT_QML_PLUGIN(MarvisKitPlugin)
 #endif
 
 namespace {
-void updateRoundedMask(QQuickWindow *window)
-{
-    if (!window || window->width() <= 0 || window->height() <= 0) {
-        return;
-    }
-
-#ifdef Q_OS_WIN
-    constexpr qreal cornerRadius = 36.0;
-    QPainterPath path;
-    path.addRoundedRect(
-        QRectF(0, 0, window->width(), window->height()),
-        cornerRadius,
-        cornerRadius);
-    window->setMask(QRegion(path.toFillPolygon().toPolygon()));
-#else
-    Q_UNUSED(window);
-#endif
-}
-
 void messageHandler(QtMsgType type, const QMessageLogContext &, const QString &message)
 {
     QFile logFile(QStringLiteral("marvis-runtime.log"));
@@ -78,28 +57,19 @@ void applyWindowChrome(QQuickWindow *window)
     }
 
     window->setColor(Qt::transparent);
-    updateRoundedMask(window);
-
-    if (!window->property("_marvisMaskInstalled").toBool()) {
-        window->setProperty("_marvisMaskInstalled", true);
-        QObject::connect(window, &QQuickWindow::widthChanged, window, [window]() {
-            updateRoundedMask(window);
-        });
-        QObject::connect(window, &QQuickWindow::heightChanged, window, [window]() {
-            updateRoundedMask(window);
-        });
-    }
 
 #ifdef Q_OS_WIN
     const HWND hwnd = reinterpret_cast<HWND>(window->winId());
     if (hwnd) {
-        constexpr int roundCornerPreference = 2;
+        // The gallery draws its own antialiased rounded shell in QML. Disable
+        // Windows 11's native rounding to avoid a second corner behind it.
+        constexpr int doNotRoundCornerPreference = 1;
         constexpr DWORD windowCornerPreferenceAttribute = 33;
         DwmSetWindowAttribute(
             hwnd,
             windowCornerPreferenceAttribute,
-            &roundCornerPreference,
-            sizeof(roundCornerPreference));
+            &doNotRoundCornerPreference,
+            sizeof(doNotRoundCornerPreference));
     }
 #endif
 }

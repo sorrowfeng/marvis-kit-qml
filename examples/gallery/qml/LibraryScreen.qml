@@ -9,8 +9,19 @@ Item {
     property int radioChoice: 0
     property int tabChoice: 0
     property real progressValue: 0.68
+    property bool openComboForScreenshot: Qt.application.arguments.indexOf("--open-combo") >= 0
 
     Kit.MarvisPalette { id: palette }
+
+    Timer {
+        interval: 520
+        running: root.openComboForScreenshot
+        repeat: false
+        onTriggered: {
+            componentScroll.contentItem.contentY = Math.max(0, selectionPanel.y - 80)
+            themeCombo.popup.open()
+        }
+    }
 
     Timer {
         id: toastTimer
@@ -36,6 +47,7 @@ Item {
     }
 
     ScrollView {
+        id: componentScroll
         anchors.fill: parent
         anchors.leftMargin: 32
         anchors.rightMargin: 32
@@ -407,6 +419,7 @@ Item {
                 }
 
                 Kit.MvPanel {
+                    id: selectionPanel
                     title: "选择与设置"
                     subtitle: "覆盖桌面设置页常用的分段、下拉、勾选、单选、开关和滑杆。"
                     Layout.fillWidth: true
@@ -421,6 +434,7 @@ Item {
                         spacing: 12
 
                         Kit.MvComboBox {
+                            id: themeCombo
                             model: ["跟随系统", "浅色", "深色"]
                             Layout.fillWidth: true
                         }

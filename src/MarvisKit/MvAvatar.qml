@@ -10,6 +10,7 @@ Rectangle {
     implicitWidth: size
     implicitHeight: size
     radius: size / 2
+    antialiasing: true
     color: "#eef1f4"
     clip: true
 

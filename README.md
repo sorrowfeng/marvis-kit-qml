@@ -10,7 +10,7 @@ This project is not affiliated with Tencent or the official Marvis product. It i
 - Reusable QML module: `import MarvisKit 1.0`.
 - Gallery app that demonstrates a Marvis-like desktop shell, sidebar, chat surface, document preview, and component catalog.
 - Controls for normal desktop applications: buttons, icon buttons, text fields, text areas, search fields, panels, cards, badges, toggles, checkbox/radio controls, sliders, segmented controls, combo boxes, tabs, progress, spinner, toast, dialog, table, toolbar, menu button, list items, breadcrumbs, avatars, and status dots.
-- Windows gallery chrome with transparent background, rounded window mask, and DWM rounded-corner preference.
+- Windows gallery chrome with transparent background, disabled native DWM rounding, and an antialiased QML rounded shell.
 
 ## Requirements
 

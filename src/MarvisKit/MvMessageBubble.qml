@@ -12,6 +12,7 @@ Rectangle {
     implicitWidth: Math.min(560, textBlock.implicitWidth + 32)
     implicitHeight: column.implicitHeight + 26
     radius: 16
+    antialiasing: true
     color: user ? "#f8f3f0" : "#ffffff"
     border.width: user ? 0 : 1
     border.color: "#eceff2"

@@ -18,6 +18,10 @@ Item {
     Rectangle {
         anchors.fill: parent
         color: "#f9faf9"
+        radius: 36
+        topRightRadius: 0
+        bottomRightRadius: 0
+        antialiasing: true
     }
 
     Rectangle {

@@ -14,6 +14,7 @@ Rectangle {
 
     implicitHeight: 64
     radius: 12
+    antialiasing: true
     color: root.selected ? "#edf4ff" : mouse.containsMouse ? "#eeeeed" : "#f5f5f4"
     border.width: root.selected ? 1 : 0
     border.color: "#cfe0ff"
@@ -28,6 +29,7 @@ Rectangle {
             width: 38
             height: 38
             radius: 10
+            antialiasing: true
             color: "#e7f1ff"
             Text {
                 anchors.centerIn: parent
@@ -55,4 +57,7 @@ Rectangle {
         cursorShape: Qt.PointingHandCursor
         onClicked: root.clicked()
     }
+
+    Behavior on color { ColorAnimation { duration: 130; easing.type: Easing.OutCubic } }
+    Behavior on border.color { ColorAnimation { duration: 130; easing.type: Easing.OutCubic } }
 }

@@ -5,12 +5,15 @@ import QtQuick.Layouts
 Window {
     id: root
 
+    readonly property int cornerRadius: 36
+    readonly property int frameInset: 8
+
     width: 1280
     height: 780
     minimumWidth: 1120
     minimumHeight: 700
     visible: true
-    color: "transparent"
+    color: "#00000000"
     flags: Qt.Window | Qt.FramelessWindowHint
 
     property int activePage: Qt.application.arguments.indexOf("--kit") >= 0 ? 1 : 0
@@ -22,12 +25,12 @@ Window {
         Rectangle {
             id: appShell
             anchors.fill: parent
-            anchors.margins: 1
-            radius: 36
+            anchors.margins: root.frameInset
+            radius: root.cornerRadius
             color: "#fdfdfc"
             border.width: 1
             border.color: "#eceff2"
-            clip: true
+            antialiasing: true
 
             RowLayout {
                 anchors.fill: parent
@@ -43,6 +46,10 @@ Window {
                     Layout.fillWidth: true
                     Layout.fillHeight: true
                     color: "#fafafa"
+                    radius: root.cornerRadius
+                    topLeftRadius: 0
+                    bottomLeftRadius: 0
+                    antialiasing: true
 
                     ColumnLayout {
                         anchors.fill: parent

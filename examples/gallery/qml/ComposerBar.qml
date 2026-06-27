@@ -78,7 +78,7 @@ Rectangle {
             height: 44
             radius: 22
             color: "#dedede"
-            scale: sendMouse.pressed ? 0.94 : sendMouse.containsMouse ? 1.04 : 1
+            scale: sendMouse.pressed ? 0.96 : 1
 
             Text {
                 anchors.centerIn: parent

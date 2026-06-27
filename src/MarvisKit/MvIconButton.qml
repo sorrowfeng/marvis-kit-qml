@@ -10,12 +10,13 @@ Button {
     implicitWidth: 32
     implicitHeight: 32
     padding: 0
-    scale: down ? 0.94 : hovered ? 1.04 : 1
+    scale: down ? 0.96 : 1
 
     MarvisPalette { id: p }
 
     background: Rectangle {
         radius: height / 2
+        antialiasing: true
         color: root.selected ? p.accentSoft : root.hovered ? p.hover : "transparent"
         border.width: root.selected ? 1 : 0
         border.color: "#cfe0ff"
@@ -30,4 +31,6 @@ Button {
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
     }
+
+    Behavior on scale { NumberAnimation { duration: 120; easing.type: Easing.OutCubic } }
 }

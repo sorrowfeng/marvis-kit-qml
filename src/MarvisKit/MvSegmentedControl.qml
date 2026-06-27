@@ -11,6 +11,7 @@ Rectangle {
 
     implicitHeight: 38
     radius: 19
+    antialiasing: true
     color: "#f0f2f4"
 
     RowLayout {
@@ -30,7 +31,9 @@ Rectangle {
 
                 background: Rectangle {
                     radius: 16
+                    antialiasing: true
                     color: root.currentIndex === index ? "#ffffff" : item.hovered ? "#f7f8fa" : "transparent"
+                    Behavior on color { ColorAnimation { duration: 120; easing.type: Easing.OutCubic } }
                 }
 
                 contentItem: Text {

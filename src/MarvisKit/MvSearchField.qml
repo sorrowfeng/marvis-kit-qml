@@ -10,9 +10,12 @@ Rectangle {
 
     implicitHeight: 38
     radius: 10
+    antialiasing: true
     color: input.activeFocus ? "#ffffff" : "#f7f8fa"
     border.width: 1
     border.color: input.activeFocus ? "#c8dcff" : "#eceff2"
+    Behavior on color { ColorAnimation { duration: 130; easing.type: Easing.OutCubic } }
+    Behavior on border.color { ColorAnimation { duration: 130; easing.type: Easing.OutCubic } }
 
     RowLayout {
         anchors.fill: parent
