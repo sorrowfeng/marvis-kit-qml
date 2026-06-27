@@ -47,9 +47,9 @@ MarvisKit uses the `Mv` prefix for reusable controls and `MarvisPalette` for sha
 - `MvSpinner`: loading spinner.
 - `MvToast`: transient notification surface.
 - `MvNotification`: dismissible notification/action card.
-- `MvDialog`: modal dialog.
+- `MvDialog`: modal dialog with rounded-shell-aware dim overlay.
 - `MvPopover`: lightweight contextual floating panel.
-- `MvDrawer`: side drawer for detail/editing flows.
+- `MvDrawer`: side drawer for detail/editing flows, with rounded-shell-aware dim overlay.
 
 ## Content
 
@@ -70,5 +70,5 @@ Controls favor predictable property names:
 
 - Labels: `text`, `title`, `subtitle`
 - Icons: `iconText`
-- State: `selected`, `checked`, `expanded`, `currentIndex`, `currentPage`, `value`
+- State: `selected`, `checked`, `expanded`, `currentIndex`, `currentPage`, `value`, `overlayInset`, `overlayRadius`
 - Actions: `clicked`, `selected`, `toggled`, `triggered`, `dismissed`, `pageChanged`, `rowClicked`, `headerClicked`

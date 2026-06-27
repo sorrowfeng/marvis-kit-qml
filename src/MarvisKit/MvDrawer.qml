@@ -8,15 +8,27 @@ Popup {
     default property alias content: body.data
     property string title: ""
     property string edge: "right"
+    property real overlayInset: 8
+    property real overlayRadius: 36
+    property color overlayColor: "#33000000"
 
     modal: true
+    dim: true
     focus: true
     width: 360
-    height: parent ? parent.height : 640
-    x: edge === "right" && parent ? parent.width - width : 0
-    y: 0
+    height: parent ? Math.max(0, parent.height - overlayInset * 2) : 640
+    x: edge === "right" && parent ? parent.width - width - overlayInset : overlayInset
+    y: parent ? overlayInset : 0
     padding: 0
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
+
+    Overlay.modal: Rectangle {
+        anchors.fill: parent
+        anchors.margins: root.overlayInset
+        radius: root.overlayRadius
+        antialiasing: true
+        color: root.overlayColor
+    }
 
     enter: Transition {
         NumberAnimation { property: "opacity"; from: 0; to: 1; duration: 140; easing.type: Easing.OutCubic }
@@ -30,6 +42,12 @@ Popup {
         color: "#ffffff"
         border.width: 1
         border.color: "#e6ebef"
+        antialiasing: true
+        radius: 0
+        topLeftRadius: root.edge === "left" ? root.overlayRadius : 0
+        bottomLeftRadius: root.edge === "left" ? root.overlayRadius : 0
+        topRightRadius: root.edge === "right" ? root.overlayRadius : 0
+        bottomRightRadius: root.edge === "right" ? root.overlayRadius : 0
     }
 
     contentItem: ColumnLayout {

@@ -7,13 +7,25 @@ Popup {
 
     property string title: "Dialog"
     property string message: ""
+    property real overlayInset: 8
+    property real overlayRadius: 36
+    property color overlayColor: "#33000000"
 
     modal: true
+    dim: true
     focus: true
     padding: 20
     width: 360
     height: content.implicitHeight + 40
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
+
+    Overlay.modal: Rectangle {
+        anchors.fill: parent
+        anchors.margins: root.overlayInset
+        radius: root.overlayRadius
+        antialiasing: true
+        color: root.overlayColor
+    }
 
     background: Rectangle {
         radius: 18

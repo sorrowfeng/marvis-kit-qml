@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.2
+
+- Kept modal dialog and drawer dim overlays inside the rounded desktop shell so opening them no longer squares off the main window corners.
+- Adjusted drawer placement and outer corner radii to preserve the window chrome when the drawer is attached to the window overlay.
+- Added gallery screenshot hooks for dialog and drawer overlay checks.
+
 ## 0.2.1
 
 - Replaced the native menu surface in `MvMenuButton` with a rounded MarvisKit popup, including hover, pressed, selected, and open/close animation states.

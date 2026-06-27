@@ -17,12 +17,14 @@ Item {
     property bool openComboForScreenshot: Qt.application.arguments.indexOf("--open-combo") >= 0
     property bool showExpandedControlsForScreenshot: Qt.application.arguments.indexOf("--expanded-controls") >= 0
     property bool openMenuForScreenshot: Qt.application.arguments.indexOf("--open-menu") >= 0
+    property bool openDialogForScreenshot: Qt.application.arguments.indexOf("--open-dialog") >= 0
+    property bool openDrawerForScreenshot: Qt.application.arguments.indexOf("--open-drawer") >= 0
 
     Kit.MarvisPalette { id: palette }
 
     Timer {
         interval: 520
-        running: root.openComboForScreenshot || root.showExpandedControlsForScreenshot || root.openMenuForScreenshot
+        running: root.openComboForScreenshot || root.showExpandedControlsForScreenshot || root.openMenuForScreenshot || root.openDialogForScreenshot || root.openDrawerForScreenshot
         repeat: false
         onTriggered: {
             if (root.openComboForScreenshot) {
@@ -31,6 +33,12 @@ Item {
             } else if (root.openMenuForScreenshot) {
                 componentScroll.contentItem.contentY = Math.max(0, toolbarMenuPanel.y - 100)
                 moreMenu.openMenu()
+            } else if (root.openDialogForScreenshot) {
+                componentScroll.contentItem.contentY = Math.max(0, toolbarMenuPanel.y - 100)
+                sampleDialog.open()
+            } else if (root.openDrawerForScreenshot) {
+                componentScroll.contentItem.contentY = Math.max(0, overlayPanel.y - 100)
+                sampleDrawer.open()
             } else {
                 componentScroll.contentItem.contentY = Math.max(0, tagStepperPanel.y - 80)
             }
@@ -755,6 +763,7 @@ Item {
                 }
 
                 Kit.MvPanel {
+                    id: overlayPanel
                     title: "浮层与通知"
                     subtitle: "Popover、Drawer 和 Notification 覆盖桌面应用常见反馈与详情面板。"
                     Layout.fillWidth: true
