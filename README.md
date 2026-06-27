@@ -9,7 +9,8 @@ This project is not affiliated with Tencent or the official Marvis product. It i
 - Native Qt Quick controls with a soft gray-white desktop visual language.
 - Reusable QML module: `import MarvisKit 1.0`.
 - Gallery app that demonstrates a Marvis-like desktop shell, sidebar, chat surface, document preview, and component catalog.
-- Controls for normal desktop applications: buttons, icon buttons, text fields, text areas, search fields, panels, cards, badges, toggles, checkbox/radio controls, sliders, segmented controls, combo boxes, tabs, progress, spinner, toast, dialog, table, toolbar, menu button, list items, breadcrumbs, avatars, and status dots.
+- 40+ controls for normal desktop applications: buttons, icon buttons, text fields, text areas, search fields, panels, cards, badges, chips, toggles, checkbox/radio controls, sliders, steppers, segmented controls, combo boxes, tabs, progress, spinner, toast, notification cards, dialog, drawer, popover, table, toolbar, menu button, pagination, calendar, tree rows, command items, list items, breadcrumbs, avatars, avatar groups, shortcuts, color swatches, and status dots.
+- Interactive state coverage for hover, pressed, selected, expanded, dismissed, paging, increment/decrement, date selection, drawer/popover opening, and notification actions.
 - Windows gallery chrome with transparent background, disabled native DWM rounding, and an antialiased QML rounded shell.
 
 ## Requirements

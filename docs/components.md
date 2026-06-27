@@ -8,6 +8,7 @@ MarvisKit uses the `Mv` prefix for reusable controls and `MarvisPalette` for sha
 - `MvPanel`: rounded panel with optional title and subtitle.
 - `MvCard`: compact content card.
 - `MvDivider`: horizontal or vertical divider.
+- `MvAccordion`: expandable/collapsible content section.
 
 ## Actions
 
@@ -15,6 +16,7 @@ MarvisKit uses the `Mv` prefix for reusable controls and `MarvisPalette` for sha
 - `MvIconButton`: compact square icon button.
 - `MvMenuButton`: button with a popup menu.
 - `MvToolbar`: rounded command toolbar.
+- `MvCommandItem`: command-palette row with shortcut support.
 
 ## Inputs
 
@@ -23,14 +25,19 @@ MarvisKit uses the `Mv` prefix for reusable controls and `MarvisPalette` for sha
 - `MvSearchField`: search input.
 - `MvComboBox`: styled combo box.
 - `MvSlider`: styled slider.
+- `MvStepper`: increment/decrement numeric input.
+- `MvCalendar`: month calendar with day selection.
 
 ## Selection
 
+- `MvChip`: selectable/removable tag chip with tone variants.
 - `MvToggle`: switch control.
 - `MvCheckbox`: checkbox control.
 - `MvRadio`: radio control.
 - `MvSegmentedControl`: pill segmented selector.
 - `MvTabBar`: tab selector.
+- `MvPagination`: compact page selector.
+- `MvColorSwatch`: color choice chip.
 
 ## Feedback
 
@@ -39,17 +46,23 @@ MarvisKit uses the `Mv` prefix for reusable controls and `MarvisPalette` for sha
 - `MvProgressBar`: progress indicator.
 - `MvSpinner`: loading spinner.
 - `MvToast`: transient notification surface.
+- `MvNotification`: dismissible notification/action card.
 - `MvDialog`: modal dialog.
+- `MvPopover`: lightweight contextual floating panel.
+- `MvDrawer`: side drawer for detail/editing flows.
 
 ## Content
 
 - `MvAvatar`: circular avatar.
+- `MvAvatarGroup`: overlapping avatar stack.
 - `MvFileCard`: file or app card.
 - `MvListItem`: sidebar/list row.
 - `MvNavItem`: navigation row.
 - `MvMessageBubble`: chat message bubble.
 - `MvBreadcrumb`: breadcrumb trail.
 - `MvTable`: simple data table.
+- `MvTreeItem`: expandable tree/file row.
+- `MvShortcut`: shortcut keycap group.
 
 ## API Style
 
@@ -57,5 +70,5 @@ Controls favor predictable property names:
 
 - Labels: `text`, `title`, `subtitle`
 - Icons: `iconText`
-- State: `selected`, `checked`, `currentIndex`, `value`
-- Actions: `clicked`, `selected`, `toggled`
+- State: `selected`, `checked`, `expanded`, `currentIndex`, `currentPage`, `value`
+- Actions: `clicked`, `selected`, `toggled`, `triggered`, `dismissed`, `pageChanged`

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.0
+
+- Added common desktop controls: `MvAccordion`, `MvAvatarGroup`, `MvCalendar`, `MvChip`, `MvColorSwatch`, `MvCommandItem`, `MvDrawer`, `MvNotification`, `MvPagination`, `MvPopover`, `MvShortcut`, `MvStepper`, and `MvTreeItem`.
+- Expanded the gallery with interactive examples for tag selection/removal, numeric stepping, pagination, collapsible sections, date selection, notifications, drawers, popovers, tree rows, command rows, shortcut keycaps, avatar groups, and color swatches.
+- Updated component documentation to reflect the broader desktop-control surface.
+
 ## 0.1.2
 
 - Fixed hover flicker caused by animating from transparent black to hover colors.

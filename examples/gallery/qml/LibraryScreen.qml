@@ -9,17 +9,27 @@ Item {
     property int radioChoice: 0
     property int tabChoice: 0
     property real progressValue: 0.68
+    property int stepperValue: 24
+    property int currentPage: 2
+    property bool treeExpanded: true
+    property color selectedSwatch: "#2f7cff"
+    property bool notificationVisible: true
     property bool openComboForScreenshot: Qt.application.arguments.indexOf("--open-combo") >= 0
+    property bool showExpandedControlsForScreenshot: Qt.application.arguments.indexOf("--expanded-controls") >= 0
 
     Kit.MarvisPalette { id: palette }
 
     Timer {
         interval: 520
-        running: root.openComboForScreenshot
+        running: root.openComboForScreenshot || root.showExpandedControlsForScreenshot
         repeat: false
         onTriggered: {
-            componentScroll.contentItem.contentY = Math.max(0, selectionPanel.y - 80)
-            themeCombo.popup.open()
+            if (root.openComboForScreenshot) {
+                componentScroll.contentItem.contentY = Math.max(0, selectionPanel.y - 80)
+                themeCombo.popup.open()
+            } else {
+                componentScroll.contentItem.contentY = Math.max(0, tagStepperPanel.y - 80)
+            }
         }
     }
 
@@ -44,6 +54,47 @@ Item {
         anchors.bottomMargin: 26
         z: 30
         text: "已完成"
+    }
+
+    Kit.MvPopover {
+        id: samplePopover
+        x: Math.max(260, root.width / 2 - width / 2)
+        y: 110
+        title: "浮层操作"
+        message: "Popover 适合承载说明、快捷动作、筛选条件和轻量表单。"
+
+        Kit.MvButton {
+            text: "知道了"
+            quiet: true
+            Layout.alignment: Qt.AlignRight
+            onClicked: samplePopover.close()
+        }
+    }
+
+    Kit.MvDrawer {
+        id: sampleDrawer
+        parent: Overlay.overlay
+        title: "任务详情"
+
+        Kit.MvTextField {
+            text: "更新电脑里的 CS2"
+            Layout.fillWidth: true
+        }
+
+        Kit.MvTextArea {
+            text: "自动打开 Steam，检查更新状态，并在完成后显示通知。"
+            Layout.fillWidth: true
+        }
+
+        Kit.MvAccordion {
+            title: "更多选项"
+            subtitle: "展开后显示后台任务配置。"
+            expanded: true
+            Layout.fillWidth: true
+
+            Kit.MvCheckbox { text: "完成后提醒我"; checked: true }
+            Kit.MvCheckbox { text: "仅在 Wi-Fi 下执行"; checked: false }
+        }
     }
 
     ScrollView {
@@ -611,6 +662,195 @@ Item {
                     Kit.MvTextArea {
                         text: "把本周的学习资料整理成摘要，并标记需要复习的知识点。"
                         Layout.fillWidth: true
+                    }
+                }
+
+                Kit.MvPanel {
+                    id: tagStepperPanel
+                    title: "标签、数值与分页"
+                    subtitle: "标签可选择/删除，Stepper 和 Pagination 会更新真实状态。"
+                    Layout.fillWidth: true
+
+                    RowLayout {
+                        Layout.fillWidth: true
+                        spacing: 8
+
+                        Kit.MvChip { text: "全部"; selected: true; variant: "accent" }
+                        Kit.MvChip { text: "本地"; variant: "neutral" }
+                        Kit.MvChip {
+                            text: "高优先级"
+                            variant: "warning"
+                            removable: true
+                            onRemoved: {
+                                toast.text = "已移除标签"
+                                toast.open = true
+                                toastTimer.restart()
+                            }
+                        }
+                    }
+
+                    RowLayout {
+                        Layout.fillWidth: true
+                        spacing: 12
+
+                        Kit.MvStepper {
+                            value: root.stepperValue
+                            from: 0
+                            to: 100
+                            suffix: "%"
+                            onValueChangedByUser: function(value) { root.stepperValue = value }
+                        }
+
+                        Kit.MvPagination {
+                            currentPage: root.currentPage
+                            pageCount: 5
+                            onPageChanged: function(page) { root.currentPage = page }
+                        }
+                    }
+                }
+
+                Kit.MvPanel {
+                    title: "日期与折叠"
+                    subtitle: "日历支持切换月份和选择日期，Accordion 带展开动画。"
+                    Layout.fillWidth: true
+
+                    Kit.MvAccordion {
+                        title: "同步任务设置"
+                        subtitle: "点击标题展开或收起。"
+                        expanded: true
+                        Layout.fillWidth: true
+
+                        Kit.MvToggle { checked: true }
+                        Kit.MvTextField {
+                            text: "每日 20:30"
+                            Layout.fillWidth: true
+                        }
+                    }
+
+                    Kit.MvCalendar {
+                        Layout.alignment: Qt.AlignHCenter
+                        onSelected: function(date) {
+                            toast.text = Qt.formatDate(date, "MM-dd")
+                            toast.open = true
+                            toastTimer.restart()
+                        }
+                    }
+                }
+
+                Kit.MvPanel {
+                    title: "浮层与通知"
+                    subtitle: "Popover、Drawer 和 Notification 覆盖桌面应用常见反馈与详情面板。"
+                    Layout.fillWidth: true
+
+                    Kit.MvNotification {
+                        visible: root.notificationVisible
+                        title: "更新已准备好"
+                        message: "后台任务已完成校验，可以继续安装。"
+                        tone: "success"
+                        actionText: "查看"
+                        Layout.fillWidth: true
+                        onActionClicked: sampleDrawer.open()
+                        onDismissed: root.notificationVisible = false
+                    }
+
+                    RowLayout {
+                        spacing: 10
+
+                        Kit.MvButton {
+                            text: "打开 Popover"
+                            onClicked: samplePopover.open()
+                        }
+
+                        Kit.MvButton {
+                            text: "打开 Drawer"
+                            accent: true
+                            onClicked: sampleDrawer.open()
+                        }
+
+                        Kit.MvButton {
+                            text: "恢复通知"
+                            quiet: true
+                            onClicked: root.notificationVisible = true
+                        }
+                    }
+                }
+
+                Kit.MvPanel {
+                    title: "树、命令与视觉选择"
+                    subtitle: "文件树、命令项、快捷键、头像组和颜色选择均有交互状态。"
+                    Layout.fillWidth: true
+
+                    Kit.MvTreeItem {
+                        title: "项目资料"
+                        iconText: "▤"
+                        hasChildren: true
+                        expanded: root.treeExpanded
+                        selected: true
+                        Layout.fillWidth: true
+                        onToggled: function(expanded) { root.treeExpanded = expanded }
+                    }
+
+                    Kit.MvTreeItem {
+                        visible: root.treeExpanded
+                        depth: 1
+                        title: "成绩分析报告.doc"
+                        subtitle: "刚刚更新"
+                        iconText: "□"
+                        Layout.fillWidth: true
+                    }
+
+                    Kit.MvCommandItem {
+                        iconText: "⌕"
+                        title: "搜索本地知识库"
+                        subtitle: "在文件、应用和历史对话中查找"
+                        shortcut: ["Ctrl", "K"]
+                        Layout.fillWidth: true
+                        onTriggered: {
+                            toast.text = "命令已触发"
+                            toast.open = true
+                            toastTimer.restart()
+                        }
+                    }
+
+                    RowLayout {
+                        Layout.fillWidth: true
+                        spacing: 10
+
+                        Kit.MvAvatarGroup {
+                            avatars: [
+                                { text: "M", color: "#edf4ff", foreground: "#2f7cff" },
+                                { text: "A", color: "#f7f0e8", foreground: "#b86b13" },
+                                { text: "K", color: "#eaf8f2", foreground: "#16885e" }
+                            ]
+                        }
+
+                        Kit.MvShortcut { keys: ["Alt", "Enter"] }
+                    }
+
+                    RowLayout {
+                        Layout.fillWidth: true
+                        spacing: 8
+
+                        Kit.MvColorSwatch {
+                            label: "蓝色"
+                            swatchColor: "#2f7cff"
+                            selected: root.selectedSwatch === swatchColor
+                            onClicked: function(color) { root.selectedSwatch = color }
+                        }
+
+                        Kit.MvColorSwatch {
+                            label: "绿色"
+                            swatchColor: "#12a174"
+                            selected: root.selectedSwatch === swatchColor
+                            onClicked: function(color) { root.selectedSwatch = color }
+                        }
+
+                        Kit.MvColorSwatch {
+                            label: "橙色"
+                            swatchColor: "#d9851f"
+                            selected: root.selectedSwatch === swatchColor
+                            onClicked: function(color) { root.selectedSwatch = color }
+                        }
                     }
                 }
             }
