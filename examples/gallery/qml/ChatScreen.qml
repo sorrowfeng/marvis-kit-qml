@@ -10,11 +10,6 @@ Item {
     property bool previewVisible: true
     property bool statusActive: false
 
-    Rectangle {
-        anchors.fill: parent
-        color: "#fafafa"
-    }
-
     RowLayout {
         anchors.fill: parent
         anchors.leftMargin: 22

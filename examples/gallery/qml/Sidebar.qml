@@ -9,6 +9,7 @@ Item {
     property int activeIndex: 0
     property string selectedLabel: activeIndex === 1 ? "控件库示例" : "学生成绩分析"
     property bool searchActive: false
+    property int cornerRadius: 36
     signal selected(int index)
 
     width: 164
@@ -18,7 +19,7 @@ Item {
     Rectangle {
         anchors.fill: parent
         color: "#f9faf9"
-        radius: 36
+        radius: root.cornerRadius
         topRightRadius: 0
         bottomRightRadius: 0
         antialiasing: true

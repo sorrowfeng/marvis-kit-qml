@@ -19,6 +19,8 @@ Item {
     property bool openMenuForScreenshot: Qt.application.arguments.indexOf("--open-menu") >= 0
     property bool openDialogForScreenshot: Qt.application.arguments.indexOf("--open-dialog") >= 0
     property bool openDrawerForScreenshot: Qt.application.arguments.indexOf("--open-drawer") >= 0
+    property int shellInset: 8
+    property int shellRadius: 36
 
     Kit.MarvisPalette { id: palette }
 
@@ -55,6 +57,8 @@ Item {
         id: sampleDialog
         x: (root.width - width) / 2
         y: (root.height - height) / 2
+        overlayInset: root.shellInset
+        overlayRadius: root.shellRadius
         title: "确认操作"
         message: "这是一枚 MarvisKit 对话框，适合用于桌面应用里的轻量确认、权限提示和完成反馈。"
     }
@@ -86,6 +90,8 @@ Item {
     Kit.MvDrawer {
         id: sampleDrawer
         parent: Overlay.overlay
+        overlayInset: root.shellInset
+        overlayRadius: root.shellRadius
         title: "任务详情"
 
         Kit.MvTextField {

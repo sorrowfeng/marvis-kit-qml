@@ -8,6 +8,7 @@ Item {
 
     property Window appWindow
     property int activeIndex: 0
+    property int cornerRadius: 36
     property bool phoneConnected: false
     property bool noticeActive: false
 
@@ -15,20 +16,45 @@ Item {
 
     Kit.MarvisPalette { id: palette }
 
-    DragHandler {
-        target: null
-        onActiveChanged: {
-            if (active && root.appWindow) {
-                root.appWindow.startSystemMove()
-            }
+    function toggleMaximized() {
+        if (!root.appWindow) {
+            return
+        }
+        if (root.appWindow.visibility === Window.Maximized) {
+            root.appWindow.showNormal()
+        } else {
+            root.appWindow.showMaximized()
         }
     }
 
     Rectangle {
         anchors.fill: parent
         color: "#fafafa"
-        topRightRadius: 36
+        topRightRadius: root.cornerRadius
         antialiasing: true
+    }
+
+    Item {
+        id: dragRegion
+        anchors.left: parent.left
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        anchors.right: headerActions.left
+        anchors.rightMargin: 8
+
+        DragHandler {
+            target: null
+            onActiveChanged: {
+                if (active && root.appWindow) {
+                    root.appWindow.startSystemMove()
+                }
+            }
+        }
+
+        TapHandler {
+            acceptedButtons: Qt.LeftButton
+            onDoubleTapped: root.toggleMaximized()
+        }
     }
 
     Text {
@@ -40,6 +66,8 @@ Item {
     }
 
     RowLayout {
+        id: headerActions
+
         anchors.right: parent.right
         anchors.rightMargin: 18
         anchors.verticalCenter: parent.verticalCenter
@@ -65,14 +93,8 @@ Item {
         }
 
         HeaderAction {
-            icon: "↗"
-            onClicked: {
-                if (root.appWindow.visibility === Window.Maximized) {
-                    root.appWindow.showNormal()
-                } else {
-                    root.appWindow.showMaximized()
-                }
-            }
+            icon: root.appWindow && root.appWindow.visibility === Window.Maximized ? "↘" : "↗"
+            onClicked: root.toggleMaximized()
         }
 
         HeaderAction {

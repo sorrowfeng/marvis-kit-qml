@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.6
+
+- Fixed the chat page background so it no longer paints over the desktop shell's bottom-right corner.
+- Added shell-aware radius and inset handling for maximized windows.
+- Added native-feeling frameless window controls: title-bar double-click maximize/restore and edge/corner resize hit zones.
+
 ## 0.2.5
 
 - Fixed `MvTable` row clipping and tightened header/cell alignment by giving columns equal layout widths and enforcing the table's minimum height.
