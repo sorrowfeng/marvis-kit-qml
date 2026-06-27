@@ -9,6 +9,8 @@ Item {
     property int activeIndex: 0
     property string selectedLabel: activeIndex === 1 ? "控件库示例" : "学生成绩分析"
     property bool searchActive: false
+    property bool menuActive: false
+    property bool deviceExpanded: false
     property int cornerRadius: 36
     signal selected(int index)
 
@@ -63,18 +65,54 @@ Item {
                 }
             }
 
-            Text {
-                text: "☰"
-                color: "#4e545d"
-                font.pixelSize: 15
+            Rectangle {
+                Layout.preferredWidth: 28
+                Layout.preferredHeight: 28
+                radius: 8
+                color: root.menuActive ? "#edf4ff" : menuMouse.containsMouse ? "#f1f3f4" : Qt.rgba(241 / 255, 243 / 255, 244 / 255, 0)
+
+                Text {
+                    anchors.centerIn: parent
+                    text: "☰"
+                    color: root.menuActive ? "#2f7cff" : "#4e545d"
+                    font.pixelSize: 15
+                }
+
+                MouseArea {
+                    id: menuMouse
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: {
+                        root.menuActive = !root.menuActive
+                        root.selectedLabel = root.menuActive ? "菜单" : (root.activeIndex === 1 ? "控件库示例" : "学生成绩分析")
+                    }
+                }
             }
         }
 
-        Text {
-            text: "● 联机小新Air15⌄"
-            color: "#7a828d"
-            font.pixelSize: 11
+        Rectangle {
             Layout.fillWidth: true
+            Layout.preferredHeight: 24
+            radius: 8
+            color: root.deviceExpanded ? "#f2f7ff" : deviceMouse.containsMouse ? "#f7f9fb" : Qt.rgba(247 / 255, 249 / 255, 251 / 255, 0)
+
+            Text {
+                anchors.left: parent.left
+                anchors.leftMargin: 0
+                anchors.verticalCenter: parent.verticalCenter
+                text: root.deviceExpanded ? "● 联机小新Air15⌃" : "● 联机小新Air15⌄"
+                color: root.deviceExpanded ? "#2f7cff" : "#7a828d"
+                font.pixelSize: 11
+            }
+
+            MouseArea {
+                id: deviceMouse
+                anchors.fill: parent
+                hoverEnabled: true
+                cursorShape: Qt.PointingHandCursor
+                onClicked: root.deviceExpanded = !root.deviceExpanded
+            }
         }
 
         Rectangle {

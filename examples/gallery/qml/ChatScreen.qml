@@ -235,6 +235,12 @@ Item {
                 anchors.bottom: parent.bottom
                 anchors.leftMargin: 0
                 anchors.rightMargin: 0
+                onFileSelectionChanged: function(selected) {
+                    root.showStatus(selected ? "已选择文件" : "已取消文件", selected ? "文件将随下一条请求发送" : "当前请求不附带文件")
+                }
+                onSearchToggled: function(active) {
+                    root.showStatus(active ? "搜索已开启" : "搜索已关闭", active ? "会优先检索本地文档和历史对话" : "恢复普通输入模式")
+                }
                 onSubmitted: function(text) {
                     root.showStatus("请求已发送", text.length > 0 ? text : "空内容，等待输入任务")
                 }

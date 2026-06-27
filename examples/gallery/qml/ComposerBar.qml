@@ -6,7 +6,10 @@ Rectangle {
     id: root
 
     property bool fileSelected: false
+    property bool searchActive: false
     signal submitted(string text)
+    signal fileSelectionChanged(bool selected)
+    signal searchToggled(bool active)
 
     implicitHeight: 62
     radius: 24
@@ -49,7 +52,10 @@ Rectangle {
                 anchors.fill: parent
                 hoverEnabled: true
                 cursorShape: Qt.PointingHandCursor
-                onClicked: root.fileSelected = !root.fileSelected
+                onClicked: {
+                    root.fileSelected = !root.fileSelected
+                    root.fileSelectionChanged(root.fileSelected)
+                }
             }
 
             Behavior on color { ColorAnimation { duration: 140; easing.type: Easing.OutCubic } }
@@ -67,10 +73,31 @@ Rectangle {
             onAccepted: root.submitted(text)
         }
 
-        Text {
-            text: "⌕"
-            color: "#5c636d"
-            font.pixelSize: 20
+        Rectangle {
+            Layout.preferredWidth: 34
+            Layout.preferredHeight: 34
+            radius: 17
+            color: root.searchActive ? "#edf4ff" : searchMouse.pressed ? "#e7ebef" : searchMouse.containsMouse ? "#f0f2f4" : Qt.rgba(240 / 255, 242 / 255, 244 / 255, 0)
+
+            Text {
+                anchors.centerIn: parent
+                text: "⌕"
+                color: root.searchActive ? "#2f7cff" : "#5c636d"
+                font.pixelSize: 20
+            }
+
+            MouseArea {
+                id: searchMouse
+                anchors.fill: parent
+                hoverEnabled: true
+                cursorShape: Qt.PointingHandCursor
+                onClicked: {
+                    root.searchActive = !root.searchActive
+                    root.searchToggled(root.searchActive)
+                }
+            }
+
+            Behavior on color { ColorAnimation { duration: 140; easing.type: Easing.OutCubic } }
         }
 
         Rectangle {

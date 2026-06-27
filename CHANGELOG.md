@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.8
+
+- Added visible responses for the gallery sidebar menu/device affordances and chat composer file/search actions.
+
 ## 0.2.7
 
 - Filled in demo interactions across the gallery so clickable component examples update state, open overlays, or show toast feedback.
